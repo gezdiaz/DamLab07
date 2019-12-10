@@ -51,7 +51,7 @@ const Rubro = ({ navigation }) => {
         setGuardar(true)
     };
 
-    if (navigation.getParam('rubro', null) != null) {
+    if (navigation.state.params.rubro != null) {
         setRubro(navigation.getParam('rubro', null));
     }
 
