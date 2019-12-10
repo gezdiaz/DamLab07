@@ -3,7 +3,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import Rubro from './Rubro';
+import Rubro from './rubro/Rubro';
+import ListaRubro from './rubro/ListaRubro';
 
 const Vista1 = () => {
   return (
@@ -24,8 +25,8 @@ const Vista2 = () => {
 };
 
 const MainNavigator = createBottomTabNavigator({
-  Home: Rubro,
-  Profile: Vista2,
+  Rubro: Rubro,
+  Lista: ListaRubro,
 });
 
 const DamApp = createAppContainer(MainNavigator);
