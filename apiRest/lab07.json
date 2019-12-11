@@ -7,18 +7,6 @@
       "destacar": true
     },
     {
-      "id": 2,
-      "orden": "2",
-      "destacar": true,
-      "descripcion": "Nombre del rubrogg"
-    },
-    {
-      "id": 3,
-      "orden": "2",
-      "destacar": true,
-      "descripcion": "Nombre del rubrogg otro"
-    },
-    {
       "id": 4,
       "orden": "2",
       "destacar": false,
@@ -43,46 +31,16 @@
       "descripcion": "Nombre"
     },
     {
-      "id": 8,
-      "destacar": false,
-      "descripcion": "Nombre",
-      "orden": "1"
-    },
-    {
-      "id": 9,
-      "destacar": false,
-      "orden": "2",
-      "descripcion": "Nombre hola"
-    },
-    {
       "id": 10,
       "orden": "2",
       "descripcion": "Nombre hola",
       "destacar": true
     },
     {
-      "id": 11,
-      "orden": "2",
-      "destacar": true,
-      "descripcion": "Alfajor de berenjena"
-    },
-    {
-      "id": 12,
-      "orden": "2",
-      "destacar": true,
-      "descripcion": "Hola 12 sip"
-    },
-    {
       "id": 13,
       "descripcion": "descripcion default",
       "orden": 1,
       "destacar": false
-    },
-    {
-      "id": 14,
-      "orden": 1,
-      "descripcion": "descripcion default 06",
-      "destacar": true
     },
     {
       "id": 15,
@@ -118,7 +76,7 @@
       "id": 20,
       "destacar": false,
       "orden": "1",
-      "descripcion": "descripci"
+      "descripcion": "descripci sin terminar"
     },
     {
       "id": 21,
@@ -161,30 +119,6 @@
       "destacar": false,
       "descripcion": "default",
       "orden": "2"
-    },
-    {
-      "id": 28,
-      "destacar": false,
-      "descripcion": "default",
-      "orden": "2"
-    },
-    {
-      "id": 29,
-      "destacar": false,
-      "descripcion": "default",
-      "orden": "2"
-    },
-    {
-      "id": 30,
-      "destacar": false,
-      "descripcion": "default",
-      "orden": "2"
-    },
-    {
-      "id": 31,
-      "descripcion": "descripcion default",
-      "orden": 1,
-      "destacar": false
     }
   ]
 }

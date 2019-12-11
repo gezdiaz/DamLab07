@@ -4,32 +4,63 @@ import { FlatList } from 'react-native-gesture-handler';
 import estilosPrincipal from '../commons/main-styles';
 import { Divider } from 'react-native';
 
-const ListaRubro = ({ navigation }) => {
+const ListaRubro = (props) => {
 
     const [listaRubros, setListaRubros] = useState([]);
     const [actualizar, setActualizar] = useState(true);
+    const [eliminarRubro, setEliminarRubro] = useState(false);
+    const [eliminarRubroi, setEliminarRubroi] = useState(null);
 
     useEffect(
         () => {
             const doGet = () => {
-                fetch('http://192.168.1.3:5000/rubros')
+                fetch('http://192.168.1.6:5000/rubros')
                     .then(res => {
                         return res.json()
                     })
                     .then(lista => {
-                        setListaRubros(lista);
                         setActualizar(false);
+                        setListaRubros(lista);
                     })
             }
+            const doDelete = () => {
+                fetch('http://192.168.1.6:5000/rubros/' + eliminarRubroi.id, {
+                    method: 'DELETE',
+                    headers: {
+                        'content-Type': 'application/json',
+                    },
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    setEliminarRubro(false)
+                    setActualizar(true)
+                })
+                    .catch(response => {
+                        console.log("error en api rest, en eliminar Rubro.");
+                        console.log(response);
+                    });
+            };
             if (actualizar) {
                 doGet();
+            }
+            if (eliminarRubro) {
+                doDelete();
             }
         }
     )
 
+    const doElimiarRubro = (item) => {
+        setEliminarRubroi(item);
+        setEliminarRubro(true);
+    }
+
     const listaOrdenada = () => {
         listaRubros.sort((a, b) => {
-            return a.orden > b.orden;
+            if (a.orden === b.orden) {
+                return a.descripcion > b.descripcion;
+            } else {
+                return a.orden > b.orden;
+            }
         });
         return listaRubros;
     }
@@ -39,8 +70,8 @@ const ListaRubro = ({ navigation }) => {
             <Text style={{ fontSize: 20, }}>{item.descripcion}</Text>
             <Text style={{ fontSize: 15, }}>Orden: {item.orden}</Text>
             <View style={{ flexDirection: 'row' }}>
-                <View style={{ marginHorizontal: 2.5 }}><Button title="Editar" onPress={() => navigation.navigate('Rubro', { rubro: item })} /></View>
-                <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" /></View>
+                <View style={{ marginHorizontal: 2.5 }}><Button title="Editar" onPress={() => { props.editarRubro(item) }} /></View>
+                <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() => doElimiarRubro(item)} /></View>
             </View>
         </View>);
     }

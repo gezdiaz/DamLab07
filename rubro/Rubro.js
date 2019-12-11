@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, TextInput, Picker, Switch } from 'react-native';
-import { restElement } from '@babel/types';
+import React, { useEffect, useState } from 'react';
+import { Button, Picker, Switch, Text, TextInput, View } from 'react-native';
 import estilosPrincipal from '../commons/main-styles.js';
+import { declareOpaqueType } from '@babel/types';
 
-const rubroDefault = {
-    id: null,
-    descripcion: 'descripcion default',
-    orden: 1,
-    destacar: false
-}
+// const rubroDefault = {
+//     id: null,
+//     descripcion: 'descripcion default',
+//     orden: 1,
+//     destacar: false
+// }
 
-const Rubro = ({ navigation }) => {
+const Rubro = (props) => {
 
     const [flag, setFlag] = useState(false);
-    const [rubro, setRubro] = useState(rubroDefault);
+    const [rubro, setRubro] = useState(props.rubro);
     const [guardar, setGuardar] = useState(false);
 
     useEffect(
         () => {
             const doPost = () => {
-                fetch('http://192.168.1.3:5000/rubros',
+                fetch('http://192.168.1.6:5000/rubros',
                     {
                         method: 'POST',
                         headers: {
@@ -29,14 +29,42 @@ const Rubro = ({ navigation }) => {
                     }
                 ).then(response => {
                     return response.json();
-                }).then(data => setGuardar(false))
+                }).then(data => {
+                    setGuardar(false);
+                    props.volverLista();
+                })
                     .catch(response => {
-                        console.log("error en api rest, en Rubro.");
+                        console.log("error en api rest, en Rubro. Método POST");
+                        console.log(response);
+                    });
+            };
+            const doPut = () => {
+                fetch('http://192.168.1.6:5000/rubros/' + rubro.id,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(rubro),
+                    }
+                ).then(response => {
+                    return response.json();
+                }).then(data => {
+                    setGuardar(false);
+                    props.volverLista();
+                })
+                    .catch(response => {
+                        console.log("error en api rest, en Rubro. Método PUT");
                         console.log(response);
                     });
             };
             if (guardar) {
-                doPost();
+                if (props.modoEditar) {
+                    doPut();
+                } else {
+                    doPost();
+                }
+                props.volverLista();
             };
         }
         , [guardar]
@@ -50,10 +78,6 @@ const Rubro = ({ navigation }) => {
     const doGuardar = () => {
         setGuardar(true)
     };
-
-    if (navigation.state.params.rubro != null) {
-        setRubro(navigation.getParam('rubro', null));
-    }
 
     return (
         <View style={estilosPrincipal.contenedor}>
@@ -76,7 +100,7 @@ const Rubro = ({ navigation }) => {
                 <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={doGuardar} />
             </View>
             <View style={estilosPrincipal.btnGuardar}>
-                <Button title="volver" onPress={() => navigation.navigate('Lista')} />
+                <Button title="volver" onPress={() => props.volverLista()} />
             </View>
         </View >
 

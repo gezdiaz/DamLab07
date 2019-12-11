@@ -1,6 +1,5 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
 import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Rubro from './rubro/Rubro';
