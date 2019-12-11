@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Style } from 'react'
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Modal } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import estilosPrincipal from '../commons/main-styles';
 import { Divider } from 'react-native';
@@ -10,6 +10,7 @@ const ListaRubro = (props) => {
     const [actualizar, setActualizar] = useState(true);
     const [eliminarRubro, setEliminarRubro] = useState(false);
     const [eliminarRubroi, setEliminarRubroi] = useState(null);
+    const [modalIsShown, setModalIsShown] = useState(false)
 
     useEffect(
         () => {
@@ -50,9 +51,14 @@ const ListaRubro = (props) => {
     )
 
     const doElimiarRubro = (item) => {
-        setEliminarRubroi(item);
+        setModalIsShown(false);
         setEliminarRubro(true);
     }
+
+    
+    
+       
+
 
     const listaOrdenada = () => {
         listaRubros.sort((a, b) => {
@@ -71,13 +77,28 @@ const ListaRubro = (props) => {
             <Text style={{ fontSize: 15, }}>Orden: {item.orden}</Text>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ marginHorizontal: 2.5 }}><Button title="Editar" onPress={() => { props.editarRubro(item) }} /></View>
-                <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() => doElimiarRubro(item)} /></View>
+                <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() =>  setModalIsShown(true)} /></View>
             </View>
-        </View>);
+                <Modal  presentationStyle ={'formSheet'} visible ={modalIsShown}> 
+                    <View  style = {{height:150, width:300, margin: 50, alignSelf: 'center', alignItems: 'center', justifyContent:'center'}}>
+                        <Text style = {estilosPrincipal.etiqueta}>Esta seguro que desea eliminar el item?</Text>
+                        <View style = {{flexDirection: 'row'}}>
+                            <View style = {estilosPrincipal.btnGuardar, {margin: 10}}>
+                                 <Button title = "Si" onPress = {() => doElimiarRubro(item)} > </Button>
+                            </View>
+                            <View style = {estilosPrincipal.btnGuardar, {margin: 10}}>
+                                <Button title = "No" onPress = {() => setModalIsShown(false)}></Button>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+            </View>);        
     }
 
     return (
         <View style={{ flex: 1 }}>
+
+           
             <View style={{ flex: 0.9, marginHorizontal: 16, }}>
                 <FlatList
                     data={listaOrdenada()}
@@ -87,6 +108,7 @@ const ListaRubro = (props) => {
             <View style={{ flex: 0.1, marginHorizontal: 16, }}>
                 <Button title="actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button>
             </View>
+            
         </View>
     )
 }
