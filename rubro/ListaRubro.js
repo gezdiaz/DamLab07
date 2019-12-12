@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Style } from 'react'
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Modal } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import estilosPrincipal from '../commons/main-styles';
+
 
 const ListaRubro = (props) => {
 
@@ -8,6 +10,7 @@ const ListaRubro = (props) => {
     const [actualizar, setActualizar] = useState(true);
     const [eliminarRubro, setEliminarRubro] = useState(false);
     const [eliminarRubroi, setEliminarRubroi] = useState(null);
+    const [modalIsShown, setModalIsShown] = useState(false)
 
     useEffect(
         () => {
@@ -48,7 +51,7 @@ const ListaRubro = (props) => {
     )
 
     const doElimiarRubro = (item) => {
-        setEliminarRubroi(item);
+        setModalIsShown(false);
         setEliminarRubro(true);
     }
 
@@ -64,14 +67,29 @@ const ListaRubro = (props) => {
     }
 
     const crearItem = (item) => {
-        return (<View style={{ margin: 5, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, }}>{item.descripcion}</Text>
-            <Text style={{ fontSize: 15, }}>Orden: {item.orden}</Text>
-            <View style={{ flexDirection: 'row' }}>
-                <View style={{ marginHorizontal: 2.5 }}><Button title="Editar" onPress={() => { props.editarRubro(item) }} /></View>
-                <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() => doElimiarRubro(item)} /></View>
-            </View>
-        </View>);
+        return (
+            <View style={{ margin: 5, alignItems: 'center' }}>
+                <Text style={{ fontSize: 20, }}>{item.descripcion}</Text>
+                <Text style={{ fontSize: 15, }}>Orden: {item.orden}</Text>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={{ marginHorizontal: 2.5 }}><Button title="Editar" onPress={() => { props.editarRubro(item) }} /></View>
+                    <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() => setModalIsShown(true)} /></View>
+                </View>
+
+                <Modal transparent={'true'} visible={modalIsShown} >
+                    <View style={{ backgroundColor: 'grey', marginBottom: 10, marginTop: 200, marginHorizontal: 75, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={estilosPrincipal.etiqueta, { justifyContent: 'center' }}>Esta seguro que desea eliminar el item?</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={estilosPrincipal.btnGuardar, { margin: 10 }}>
+                                <Button title="Si" onPress={() => doElimiarRubro(item)} > </Button>
+                            </View>
+                            <View style={estilosPrincipal.btnGuardar, { margin: 10 }}>
+                                <Button title="No" onPress={() => setModalIsShown(false)}></Button>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+            </View>);
     }
 
     return (
