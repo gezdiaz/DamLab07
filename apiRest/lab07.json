@@ -120,5 +120,36 @@
       "descripcion": "default",
       "orden": "2"
     }
+  ],
+  "clasificados": [
+    {
+      "foto": 1,
+      "titulo": " Peimer clasificado",
+      "descripcion": " Nada ",
+      "precio": " 25",
+      "correoElectronico": " Haja@haha",
+      "fecha": "2019-12-28T03:00:00.000Z",
+      "rubro": {
+        "id": 20,
+        "destacar": false,
+        "orden": "1",
+        "descripcion": "descripci sin terminar"
+      },
+      "id": 4
+    },
+    {
+      "titulo": "titulo default",
+      "descripcion": "descripcion default",
+      "precio": "0",
+      "correoElectronico": "xxx@xxx",
+      "fecha": "2019-12-12T21:06:37.304Z",
+      "rubro": {
+        "id": 1,
+        "descripcion": "Nombre del rubro",
+        "orden": "2",
+        "destacar": true
+      },
+      "id": 5
+    }
   ]
 }

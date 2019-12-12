@@ -19,7 +19,7 @@ const Rubro = (props) => {
     useEffect(
         () => {
             const doPost = () => {
-                fetch('http://192.168.1.6:5000/rubros',
+                fetch('http://192.168.1.2:5000/rubros',
                     {
                         method: 'POST',
                         headers: {
@@ -39,7 +39,7 @@ const Rubro = (props) => {
                     });
             };
             const doPut = () => {
-                fetch('http://192.168.1.6:5000/rubros/' + rubro.id,
+                fetch('http://192.168.1.2:5000/rubros' + rubro.id,
                     {
                         method: 'PUT',
                         headers: {

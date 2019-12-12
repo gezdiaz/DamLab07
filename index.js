@@ -8,5 +8,6 @@ import DamApp from './DamApp';
 import AppLab07 from './AppLab07';
 import { name as appName } from './app.json';
 import 'react-native-gesture-handler';
+import AltaClasificado from './rubro/AltaClasificado'
 
-AppRegistry.registerComponent(appName, () => AppLab07);
+AppRegistry.registerComponent(appName, () => AltaClasificado);

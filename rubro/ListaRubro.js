@@ -2,7 +2,7 @@ import React, { useState, useEffect, Style } from 'react'
 import { View, Text, Button, Modal } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import estilosPrincipal from '../commons/main-styles';
-import { Divider } from 'react-native';
+
 
 const ListaRubro = (props) => {
 
@@ -15,7 +15,7 @@ const ListaRubro = (props) => {
     useEffect(
         () => {
             const doGet = () => {
-                fetch('http://192.168.1.6:5000/rubros')
+                fetch('http://192.168.1.2:5000/rubros')
                     .then(res => {
                         return res.json()
                     })
@@ -25,7 +25,7 @@ const ListaRubro = (props) => {
                     })
             }
             const doDelete = () => {
-                fetch('http://192.168.1.6:5000/rubros/' + eliminarRubroi.id, {
+                fetch('http://192.168.1.2:5000/rubros' + eliminarRubroi.id, {
                     method: 'DELETE',
                     headers: {
                         'content-Type': 'application/json',
@@ -55,11 +55,6 @@ const ListaRubro = (props) => {
         setEliminarRubro(true);
     }
 
-    
-    
-       
-
-
     const listaOrdenada = () => {
         listaRubros.sort((a, b) => {
             if (a.orden === b.orden) {
@@ -72,19 +67,21 @@ const ListaRubro = (props) => {
     }
 
     const crearItem = (item) => {
-        return (<View style={{ margin: 5, alignItems: 'center' }}>
+        return (
+        <View style={{ margin: 5, alignItems: 'center' }}>
             <Text style={{ fontSize: 20, }}>{item.descripcion}</Text>
             <Text style={{ fontSize: 15, }}>Orden: {item.orden}</Text>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ marginHorizontal: 2.5 }}><Button title="Editar" onPress={() => { props.editarRubro(item) }} /></View>
                 <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() =>  setModalIsShown(true)} /></View>
             </View>
-                <Modal  presentationStyle ={'formSheet'} visible ={modalIsShown}> 
-                    <View  style = {{height:150, width:300, margin: 50, alignSelf: 'center', alignItems: 'center', justifyContent:'center'}}>
-                        <Text style = {estilosPrincipal.etiqueta}>Esta seguro que desea eliminar el item?</Text>
+            
+                <Modal  transparent={'true'}  visible ={modalIsShown} > 
+                    <View  style = {{backgroundColor:'grey', marginBottom:10, marginTop:200,marginHorizontal:75, alignSelf: 'center', alignItems: 'center', justifyContent:'center'}}>                 
+                        <Text style = { estilosPrincipal.etiqueta, {justifyContent:'center'}}>Esta seguro que desea eliminar el item?</Text>
                         <View style = {{flexDirection: 'row'}}>
                             <View style = {estilosPrincipal.btnGuardar, {margin: 10}}>
-                                 <Button title = "Si" onPress = {() => doElimiarRubro(item)} > </Button>
+                                <Button title = "Si" onPress = {() => doElimiarRubro(item)} > </Button>
                             </View>
                             <View style = {estilosPrincipal.btnGuardar, {margin: 10}}>
                                 <Button title = "No" onPress = {() => setModalIsShown(false)}></Button>
@@ -92,13 +89,11 @@ const ListaRubro = (props) => {
                         </View>
                     </View>
                 </Modal>
-            </View>);        
+        </View>);        
     }
 
     return (
-        <View style={{ flex: 1 }}>
-
-           
+        <View style={{ flex: 1 }}>       
             <View style={{ flex: 0.9, marginHorizontal: 16, }}>
                 <FlatList
                     data={listaOrdenada()}
@@ -108,7 +103,6 @@ const ListaRubro = (props) => {
             <View style={{ flex: 0.1, marginHorizontal: 16, }}>
                 <Button title="actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button>
             </View>
-            
         </View>
     )
 }
