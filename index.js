@@ -12,4 +12,4 @@ import 'react-native-gesture-handler';
 
 import ListaRubro from './rubro/ListaRubro';
 
-AppRegistry.registerComponent(appName, () => ListaClasificados);
+AppRegistry.registerComponent(appName, () => AppLab07);

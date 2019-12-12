@@ -2,6 +2,8 @@ import { View, Text } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Rubro from './rubro/Rubro';
 import ListaRubro from './rubro/ListaRubro';
+import AltaClasificado from './rubro/AltaClasificado';
+import ListaClasificados from './rubro/ListaClasificados';
 
 const rubroDefault = {
     id: null,
@@ -10,27 +12,67 @@ const rubroDefault = {
     destacar: false
 }
 
+const clasificadoDefault = {
+    rubro: rubroDefault,
+    titulo: 'titulo default',
+    descripcion: 'descripcion default',
+    precio: '0',
+    correoElectronico: 'xxx@xxx',
+    fecha: new Date(),
+    // foto: require('./persona.png'),
+}
+
 const AppLab07 = () => {
 
     const [modoRubro, setmodoRubro] = useState(false);
+    const [modoListaRubro, setmodoListaRubro] = useState(false);
+    const [modoClasificado, setModoClasificado] = useState(false);
+    const [modoEditarRubro, setmodoEditarRubro] = useState(false);
+    const [modoEditarClasificado, setmodoEditarClasificado] = useState(false);
     const [rubro, setRubro] = useState(rubroDefault);
-    const [modoEditar, setModoEditar] = useState(false);
+    const [clasificado, setClasificado] = useState(clasificadoDefault);
 
     const nuevoRubro = () => {
         setmodoRubro(true);
-        setModoEditar(false);
+        setmodoEditarRubro(false);
     }
     const editarRubro = (rubroEditar) => {
         setRubro(rubroEditar);
-        setModoEditar(true);
+        setmodoEditarRubro(true);
         setmodoRubro(true);
     }
     const salirmodoRubro = () => setmodoRubro(false);
 
+    const verRubros = () => setmodoListaRubro(true);
+    const salirModoListaRubro = () => setmodoListaRubro(false);
+
+    const nuevoClasificado = () => {
+        setModoClasificado(true);
+        setmodoEditarClasificado(false);
+    }
+    const editarClasificado = (clasificadoEditar) => {
+        setClasificado(clasificadoEditar);
+        setmodoEditarClasificado(true);
+        setModoClasificado(true);
+    }
+    const salirModoClasificado = () => setModoClasificado(flase);
+
+
+
+
     if (modoRubro) {
-        return (<Rubro volverLista={salirmodoRubro} rubro={rubro} modoEditar={modoEditar} />);
+        return (<Rubro volver={salirmodoRubro} rubro={rubro} modoEditarRubro={modoEditarRubro} />);
     } else {
-        return (<ListaRubro nuevoRubro={nuevoRubro} editarRubro={editarRubro} />);
+        if (modoListaRubro) {
+            return (<ListaRubro nuevoRubro={nuevoRubro} editarRubro={editarRubro} volver={salirModoListaRubro} />);
+        } else {
+            if (modoClasificado) {
+                return (<AltaClasificado clasificado={clasificado} modoEditar={modoEditarClasificado} volver={salirModoClasificado} />)
+            } else {
+                return (<ListaClasificados nuevoClasificado={nuevoClasificado} verRubros={verRubros} editarClasificado={editarClasificado} />)
+            }
+        }
+
     }
 
 }

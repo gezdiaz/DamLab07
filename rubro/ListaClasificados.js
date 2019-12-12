@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Style } from 'react'
 import { StyleSheet, View, Text, Button, SectionList, } from 'react-native';
 
-const ListaClasificados = () => {
+const ListaClasificados = (props) => {
 
     const [actualizar, setActualizar] = useState(true);
     const [data, setData] = useState([]);
@@ -88,14 +88,25 @@ const ListaClasificados = () => {
     }
 
     return (
-        <SectionList
-            sections={data}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({ item }) => <Item title={item} />}
-            renderSectionHeader={({ section: { title } }) => (
-                <Text style={styles.header}>{title}</Text>
-            )}
-        />
+        <View style={{ flex: 1 }}>
+            <View style={{ flex: 0.87 }}>
+                <SectionList
+                    sections={data}
+                    keyExtractor={(item, index) => item + index}
+                    renderItem={({ item }) => <Item title={item} />}
+                    renderSectionHeader={({ section: { title } }) => (
+                        <Text style={styles.header}>{title}</Text>
+                    )}
+                />
+            </View>
+            <View style={{ flex: 0.13 }}>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <View style={{ flex: 0.5 }}><Button title="Ver rubros" onPress={() => props.verRubros()}></Button></View>
+                    <View style={{ flex: 0.5 }}><Button title="Nuevo clasificado" onPress={() => props.nuevoClasificado()}></Button></View>
+                </View>
+                <Button title="actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button>
+            </View>
+        </View>
     )
 
 }

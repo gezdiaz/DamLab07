@@ -100,8 +100,11 @@ const ListaRubro = (props) => {
                     renderItem={({ item }) => (crearItem(item))}
                     keyExtractor={item => item.id} />
             </View>
-            <View style={{ flex: 0.1, marginHorizontal: 16, }}>
-                <Button title="actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button>
+            <View style={{ flex: 0.1, marginHorizontal: 16, alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={{ felx: 0.05, marginHorizontal: 5, }}><Button title="Actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button></View>
+                    <View style={{ felx: 0.05, marginHorizontal: 5, }}><Button title="Volver" style={{ position: 'absolute' }} onPress={() => props.volver()}></Button></View>
+                </View>
             </View>
         </View>
     )

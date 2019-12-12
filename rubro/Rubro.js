@@ -100,7 +100,7 @@ const Rubro = (props) => {
                 <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={doGuardar} />
             </View>
             <View style={estilosPrincipal.btnGuardar}>
-                <Button title="volver" onPress={() => props.volverLista()} />
+                <Button title="volver" onPress={() => props.volver()} />
             </View>
         </View >
 
