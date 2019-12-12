@@ -1,8 +1,6 @@
 import React, { useState, useEffect, Style } from 'react'
 import { View, Text, Button } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import estilosPrincipal from '../commons/main-styles';
-import { Divider } from 'react-native';
 
 const ListaRubro = (props) => {
 
@@ -14,7 +12,7 @@ const ListaRubro = (props) => {
     useEffect(
         () => {
             const doGet = () => {
-                fetch('http://192.168.1.6:5000/rubros')
+                fetch('http://192.168.1.2:5000/rubros')
                     .then(res => {
                         return res.json()
                     })
@@ -24,7 +22,7 @@ const ListaRubro = (props) => {
                     })
             }
             const doDelete = () => {
-                fetch('http://192.168.1.6:5000/rubros/' + eliminarRubroi.id, {
+                fetch('http://192.168.1.2:5000/rubros/' + eliminarRubroi.id, {
                     method: 'DELETE',
                     headers: {
                         'content-Type': 'application/json',
