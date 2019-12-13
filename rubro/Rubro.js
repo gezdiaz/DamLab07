@@ -39,7 +39,7 @@ const Rubro = (props) => {
                     });
             };
             const doPut = () => {
-                fetch('http://192.168.1.2:5000/rubros' + rubro.id,
+                fetch('http://192.168.1.2:5000/rubros/' + rubro.id,
                     {
                         method: 'PUT',
                         headers: {
@@ -100,7 +100,7 @@ const Rubro = (props) => {
                 <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={doGuardar} />
             </View>
             <View style={estilosPrincipal.btnGuardar}>
-                <Button title="volver" onPress={() => props.volverLista()} />
+                <Button title="volver" onPress={() => props.volver()} />
             </View>
         </View >
 

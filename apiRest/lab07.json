@@ -37,12 +37,6 @@
       "destacar": true
     },
     {
-      "id": 13,
-      "descripcion": "descripcion default",
-      "orden": 1,
-      "destacar": false
-    },
-    {
       "id": 15,
       "descripcion": "descripcion default",
       "orden": 1,
@@ -61,12 +55,6 @@
       "destacar": true
     },
     {
-      "id": 18,
-      "orden": 1,
-      "destacar": true,
-      "descripcion": "descripcion"
-    },
-    {
       "id": 19,
       "descripcion": "descripcion default",
       "destacar": false,
@@ -76,7 +64,7 @@
       "id": 20,
       "destacar": false,
       "orden": "1",
-      "descripcion": "descripci sin terminar"
+      "descripcion": "descripci sin terminar editada"
     },
     {
       "id": 21,

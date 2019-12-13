@@ -1,49 +1,27 @@
 import React, { useState, useEffect, Style } from 'react'
-import { Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid,View, Text, Button, Modal, ImageBackground } from 'react-native';
+import { Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid,View, Text, Button, Modal } from 'react-native';
 import estilosPrincipal from '../commons/main-styles';
 import { TextInput, State } from 'react-native-gesture-handler';
 import {RNCamera} from 'react-native-camera'
 
 
 const AltaClasificado = (props) => {
-    
-    const rubroDefault = {
-        id: null,
-        descripcion: 'descripcion default',
-        orden: 1,
-        destacar: false
-    }
-
-    const altaClasificadoDefault ={
-        rubro: rubroDefault,
-        titulo: 'titulo default',
-        descripcion: 'descripcion default',
-        precio: '0',
-        correoElectronico: 'xxx@xxx',
-        fecha: new Date(),
-        foto: -1,
-    }
-
-    const[altaClasificado, setAltaClasificado]= useState(altaClasificadoDefault /*props.altaClasificadoDefaul */);
-    const[listaRubros, setListaRubros] = useState([]);
-    const[rubroSeleccionado, setRubroSeleccionado] = useState(rubroDefault /*props.rubroDefault */);
-    const[titulo, setTitulo] = useState('');
-    const[descripcion, setDescripcion] = useState('');
-    const[precio, setPrecio] = useState('0');
-    const[correo, setCorreo] = useState('');
-    const[actualizarLista, setActualizarLista] = useState(true);
-    const[dateSelected, setDateSelected] = useState(new Date());
-    const[guardarClasificado, setGuardar]= useState(false);
-    const[takePhoto, setTakePhoto] = useState (false);
-    const[base64Icon,setBase64Icon] = useState('https://png.pngtree.com/element_our/png_detail/20181124/businessman-vector-icon-png_246587.jpg')
    
+    const[takePhoto, setTakePhoto] = useState (false);
+    const[base64Icon,setBase64Icon] = useState('https://png.pngtree.com/element_our/png_detail/20181124/businessman-vector-icon-png_246587.jpg')   
+    const [clasificado, setClasificado] = useState(props.clasificado);
+    const [listaRubros, setListaRubros] = useState([]);
+    const [actualizarLista, setActualizarLista] = useState(true);
+    const [guardarClasificado, setGuardar] = useState(false);
+
     const fechaMinima = new Date();
     const options = {
-        date: new Date(fechaMinima.getFullYear+100,11,31) ,
-        minDate: new Date(fechaMinima.getFullYear(), fechaMinima.getMonth(),fechaMinima.getDay()+9),
-        maxDate: new Date(fechaMinima.getFullYear()+100, fechaMinima.getMonth(),fechaMinima.getDay()),
+        date: new Date(fechaMinima.getFullYear + 100, 11, 31),
+        minDate: new Date(fechaMinima.getFullYear(), fechaMinima.getMonth(), fechaMinima.getDay() + 9),
+        maxDate: new Date(fechaMinima.getFullYear() + 100, fechaMinima.getMonth(), fechaMinima.getDay()),
         mode: 'calendar',
     }
+
     const base64IconPrefijo = 'data:image/jpg;base64, '
     const capture={
         flex: 0,
@@ -54,25 +32,30 @@ const AltaClasificado = (props) => {
         alignSelf: 'center',
         marginTop: 500,
       }
-    const showDatePicker= async()=>{
+
+
+
+    const showDatePicker = async () => {
+
         try {
             //Abriri el dialogo con DatePicker
-            const {action, year, month, day} = await DatePickerAndroid.open(
+            const { action, year, month, day } = await DatePickerAndroid.open(
                 //options
-                {date: new Date(),
-                minDate: options.minDate,
-                maxDate: options.maxDate,
-                mode: options.mode }
-                );
+                {
+                    date: new Date(),
+                    minDate: options.minDate,
+                    maxDate: options.maxDate,
+                    mode: options.mode
+                }
+            );
             if (action !== DatePickerAndroid.dismissedAction) {
-              // Selected year, month (0-11), day
-              actualizarEstadoAlta('fecha',new Date(year,month, day));
-              setDateSelected(new Date(year,month, day));
+                // Selected year, month (0-11), day
+                actualizarEstadoAlta('fecha', new Date(year, month, day));
             }
-          } catch ({code, message}) {
+        } catch ({ code, message }) {
             console.warn('Cannot open date picker', message);
-          }
-    }    
+        }
+    }
 
     useEffect(
         () => {
@@ -93,7 +76,7 @@ const AltaClasificado = (props) => {
                         headers: {
                             'content-Type': 'application/json',
                         },
-                        body: JSON.stringify(altaClasificado),
+                        body: JSON.stringify(clasificado),
                     }
                 ).then(response => {
                     return response.json();
@@ -105,23 +88,25 @@ const AltaClasificado = (props) => {
                         console.log(response);
                     });
             };
-        
-            if(actualizarLista){
+
+            if (actualizarLista) {
                 doGet();
                 setActualizarLista(false);
             }
-            if(guardarClasificado){
+            if (guardarClasificado) {
                 doPost();
             }
         }
     )
-    
-      const pickerItems = () => {
-        return( 
-            
-            listaRubros.map( (x,i) => { 
-            return( <Picker.Item label={x.descripcion} key={i} value={x} />)} ));
+
+    const pickerItems = () => {
+        return (
+
+            listaRubros.map((x, i) => {
+                return (<Picker.Item label={x.descripcion} key={i} value={x} />)
+            }));
     }
+
 
     const takePicture = async function(camera) {
         const options = { quality: 0.5, base64: true};
@@ -134,25 +119,26 @@ const AltaClasificado = (props) => {
       };
     
     const actualizarEstadoAlta = (nombre, valor) => {
-        const altaNueva = { ...altaClasificado, [nombre]: valor };
-        setAltaClasificado(altaNueva);
+        const nuevo = { ...clasificado, [nombre]: valor };
+        setClasificado(nuevo);
     }
       
     return (
         <ScrollView >
             <Text style={estilosPrincipal.titulo}> NUEVO CLASIFICADO</Text>
             <Text style={estilosPrincipal.etiqueta}  >Seleccionar rubro</Text>
-            <Picker selectedValue={altaClasificado.rubro} style={{ width: '50%' }}
-                onValueChange={val => actualizarEstadoAlta('rubro',val)}>
-                 {pickerItems()}
-            </Picker>            
+            <Picker selectedValue={clasificado.rubro} style={{ width: '50%' }}
+                onValueChange={val => actualizarEstadoAlta('rubro', val)}>
+                {pickerItems()}
+            </Picker>
             <Text style={estilosPrincipal.etiqueta}>Titulo</Text>
-            <TextInput style={estilosPrincipal.inputText} onChangeText={val => actualizarEstadoAlta('titulo',val)}> </TextInput>
+            <TextInput style={estilosPrincipal.inputText} onChangeText={val => actualizarEstadoAlta('titulo', val)}> </TextInput>
             <Text style={estilosPrincipal.etiqueta}>Descripción</Text>
-            <TextInput style={estilosPrincipal.inputText}  multiline = {true} numberOfLines={5} onChangeText={val => actualizarEstadoAlta('descripcion',val)}> </TextInput>
+            <TextInput style={estilosPrincipal.inputText} multiline={true} numberOfLines={5} onChangeText={val => actualizarEstadoAlta('descripcion', val)}> </TextInput>
             <Text style={estilosPrincipal.etiqueta}>Precio</Text>
-            <TextInput style={estilosPrincipal.inputText}  keyboardType={"numeric"} onChangeText={val => actualizarEstadoAlta('precio',val)}> </TextInput>
+            <TextInput style={estilosPrincipal.inputText} keyboardType={"numeric"} onChangeText={val => actualizarEstadoAlta('precio', val)}> </TextInput>
             <Text style={estilosPrincipal.etiqueta}>Su correo electrónico</Text>
+
             <TextInput style={estilosPrincipal.inputText}  keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico',val)}> </TextInput>
             <View style = {{borderWidth:5,borderColor:'violet', borderRadius:10,marginHorizontal:10, marginBottom:10,marginTop:10, backgroundColor: 'violet'}}>
             <TouchableWithoutFeedback
@@ -180,11 +166,21 @@ const AltaClasificado = (props) => {
          
           <Image style={{alignSelf:'center', width: 300, height:300, marginVertical:10} } defaultSource={require('./persona.png')} source={{uri: base64Icon}}></Image>
           <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={()=>setGuardar(true)}></Button>
+            <TextInput style={estilosPrincipal.inputText} keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico', val)}> </TextInput>
+            <View style={{ borderWidth: 5, borderColor: 'violet', borderRadius: 10, marginHorizontal: 10, marginBottom: 10, marginTop: 10, backgroundColor: 'violet' }}>
+                <TouchableWithoutFeedback
+                    onPress={showDatePicker.bind(this)}>
+                    <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}> Seleccionar fecha fin oferta</Text>
+                </TouchableWithoutFeedback></View>
+            <Button style={estilosPrincipal.btnGuardar} title="Tomar foto"></Button>
+            <Image source={require('./persona.png')}></Image>
+            <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={() => setGuardar(true)}></Button>
+
         </ScrollView>
     );
     
 }
 
-export default AltaClasificado; 
+export default AltaClasificado;
 
 
