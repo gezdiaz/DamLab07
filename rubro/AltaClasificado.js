@@ -165,17 +165,12 @@ const AltaClasificado = (props) => {
           </Modal>
          
           <Image style={{alignSelf:'center', width: 300, height:300, marginVertical:10} } defaultSource={require('./persona.png')} source={{uri: base64Icon}}></Image>
-          <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={()=>setGuardar(true)}></Button>
-            <TextInput style={estilosPrincipal.inputText} keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico', val)}> </TextInput>
-            <View style={{ borderWidth: 5, borderColor: 'violet', borderRadius: 10, marginHorizontal: 10, marginBottom: 10, marginTop: 10, backgroundColor: 'violet' }}>
-                <TouchableWithoutFeedback
-                    onPress={showDatePicker.bind(this)}>
-                    <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}> Seleccionar fecha fin oferta</Text>
-                </TouchableWithoutFeedback></View>
-            <Button style={estilosPrincipal.btnGuardar} title="Tomar foto"></Button>
-            <Image source={require('./persona.png')}></Image>
-            <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={() => setGuardar(true)}></Button>
-
+          <View style={{flexDirection:'row', alignContent:'center'}}> 
+        
+            <View style={{ flex: 0.65,marginHorizontal:5 }}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>
+            <View style={{ flex: 0.35 ,marginHorizontal:5,marginBottom:5}}><Button title="Cancelar" onPress={() => props.volver()}></Button></View>
+           
+          </View> 
         </ScrollView>
     );
     

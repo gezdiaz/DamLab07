@@ -55,7 +55,7 @@ const AppLab07 = () => {
         setmodoEditarClasificado(true);
         setModoClasificado(true);
     }
-    const salirModoClasificado = () => setModoClasificado(flase);
+    const salirModoClasificado = () => setModoClasificado(false);
 
 
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Style } from 'react'
 import { StyleSheet, View, Text, Button, SectionList, } from 'react-native';
+import estilosPrincipal from '../commons/main-styles';
 
 const ListaClasificados = (props) => {
 
@@ -89,6 +90,7 @@ const ListaClasificados = (props) => {
 
     return (
         <View style={{ flex: 1 }}>
+            <Text style={estilosPrincipal.titulo}> Lista de clasificados</Text>
             <View style={{ flex: 0.87 }}>
                 <SectionList
                     sections={data}
