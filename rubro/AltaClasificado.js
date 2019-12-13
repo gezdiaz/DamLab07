@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Style } from 'react'
-import { Image, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid,View, Text, Button, Modal } from 'react-native';
+import { Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid,View, Text, Button, Modal, ImageBackground } from 'react-native';
 import estilosPrincipal from '../commons/main-styles';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput, State } from 'react-native-gesture-handler';
+import {RNCamera} from 'react-native-camera'
 
 
 const AltaClasificado = (props) => {
@@ -20,7 +21,7 @@ const AltaClasificado = (props) => {
         precio: '0',
         correoElectronico: 'xxx@xxx',
         fecha: new Date(),
-       // foto: require('./persona.png'),
+        foto: -1,
     }
 
     const[altaClasificado, setAltaClasificado]= useState(altaClasificadoDefault /*props.altaClasificadoDefaul */);
@@ -33,9 +34,9 @@ const AltaClasificado = (props) => {
     const[actualizarLista, setActualizarLista] = useState(true);
     const[dateSelected, setDateSelected] = useState(new Date());
     const[guardarClasificado, setGuardar]= useState(false);
-    
-
-
+    const[takePhoto, setTakePhoto] = useState (false);
+    const[base64Icon,setBase64Icon] = useState('https://png.pngtree.com/element_our/png_detail/20181124/businessman-vector-icon-png_246587.jpg')
+   
     const fechaMinima = new Date();
     const options = {
         date: new Date(fechaMinima.getFullYear+100,11,31) ,
@@ -43,8 +44,16 @@ const AltaClasificado = (props) => {
         maxDate: new Date(fechaMinima.getFullYear()+100, fechaMinima.getMonth(),fechaMinima.getDay()),
         mode: 'calendar',
     }
-    var rubroSeleccionadoPicker = rubroDefault;
-    
+    const base64IconPrefijo = 'data:image/jpg;base64, '
+    const capture={
+        flex: 0,
+        backgroundColor: 'violet',
+        borderRadius: 30,
+        padding: 10,
+        paddingHorizontal: 50,
+        alignSelf: 'center',
+        marginTop: 500,
+      }
     const showDatePicker= async()=>{
         try {
             //Abriri el dialogo con DatePicker
@@ -113,11 +122,22 @@ const AltaClasificado = (props) => {
             listaRubros.map( (x,i) => { 
             return( <Picker.Item label={x.descripcion} key={i} value={x} />)} ));
     }
+
+    const takePicture = async function(camera) {
+        const options = { quality: 0.5, base64: true};
+        const data = await camera.takePictureAsync(options);
+        actualizarEstadoAlta('foto', data);
+        setBase64Icon(base64IconPrefijo.concat(data.base64));
+        setTakePhoto(false);
+        //  eslint-disable-next-line
+        console.log(data.uri);
+      };
     
     const actualizarEstadoAlta = (nombre, valor) => {
         const altaNueva = { ...altaClasificado, [nombre]: valor };
         setAltaClasificado(altaNueva);
     }
+      
     return (
         <ScrollView >
             <Text style={estilosPrincipal.titulo}> NUEVO CLASIFICADO</Text>
@@ -139,11 +159,30 @@ const AltaClasificado = (props) => {
             onPress={showDatePicker.bind(this)}>
             <Text style={{color:'white',fontSize: 20, alignSelf: 'center'}}> Seleccionar fecha fin oferta</Text>
           </TouchableWithoutFeedback></View>
-            <Button style={estilosPrincipal.btnGuardar}  title = "Tomar foto"></Button>
-            <Image source={require('./persona.png')}></Image>
-            <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={()=>setGuardar(true)}></Button>
+            <Button style={estilosPrincipal.btnGuardar}  title = "Tomar foto"  onPress = {()=>setTakePhoto(true)}></Button>
+            <Modal visible = {takePhoto}>
+                <RNCamera
+                    autoFocus = {RNCamera.Constants.AutoFocus.on}
+                    style={{ position:'absolute', top: 0, left: 0, right:0, bottom: 0}}>
+                    {({ camera, status}) => {
+                if (status == 'READY') {
+                return (
+                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => takePicture(camera)} style={capture}>
+                    <Text style={{ fontSize: 20, color:'white', textAlign:'center'}}>FOTO</Text>
+                    </TouchableOpacity>
+                </View>
+                );
+            }}}
+                   
+             </RNCamera>
+          </Modal>
+         
+          <Image style={{alignSelf:'center', width: 300, height:300, marginVertical:10} } defaultSource={require('./persona.png')} source={{uri: base64Icon}}></Image>
+          <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={()=>setGuardar(true)}></Button>
         </ScrollView>
     );
+    
 }
 
 export default AltaClasificado; 
