@@ -2,6 +2,7 @@ import React, { useState, useEffect, Style } from 'react'
 import { View, Text, Button, Modal } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import estilosPrincipal from '../commons/main-styles';
+import { urlJSONServer } from '../AppLab07';
 
 
 const ListaRubro = (props) => {
@@ -9,13 +10,13 @@ const ListaRubro = (props) => {
     const [listaRubros, setListaRubros] = useState([]);
     const [actualizar, setActualizar] = useState(true);
     const [eliminarRubro, setEliminarRubro] = useState(false);
-    const [eliminarRubroi, setEliminarRubroi] = useState(null);
+    const [rubroAEliminar, setRubroAEliminar] = useState(null);
     const [modalIsShown, setModalIsShown] = useState(false)
 
     useEffect(
         () => {
             const doGet = () => {
-                fetch('http://192.168.1.2:5000/rubros')
+                fetch(urlJSONServer + '/rubros')
                     .then(res => {
                         return res.json()
                     })
@@ -25,7 +26,7 @@ const ListaRubro = (props) => {
                     })
             }
             const doDelete = () => {
-                fetch('http://192.168.1.2:5000/rubros/' + eliminarRubroi.id, {
+                fetch(urlJSONServer + '/rubros/' + rubroAEliminar.id, {
                     method: 'DELETE',
                     headers: {
                         'content-Type': 'application/json',
@@ -52,6 +53,7 @@ const ListaRubro = (props) => {
 
     const doElimiarRubro = (item) => {
         setModalIsShown(false);
+        //setRubroAEliminar(item);
         setEliminarRubro(true);
     }
 
@@ -73,10 +75,13 @@ const ListaRubro = (props) => {
                 <Text style={{ fontSize: 15, }}>Orden: {item.orden}</Text>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={{ marginHorizontal: 2.5 }}><Button title="Editar" onPress={() => { props.editarRubro(item) }} /></View>
-                    <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() => setModalIsShown(true)} /></View>
+                    <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() => {
+                        setModalIsShown(true);
+                        setRubroAEliminar(item);
+                    }} /></View>
                 </View>
 
-                <Modal transparent={'true'} visible={modalIsShown} >
+                <Modal /* transparent={'true'} */ visible={modalIsShown}>
                     <View style={{ backgroundColor: 'grey', marginBottom: 10, marginTop: 200, marginHorizontal: 75, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={estilosPrincipal.etiqueta, { justifyContent: 'center' }}>Esta seguro que desea eliminar el item?</Text>
                         <View style={{ flexDirection: 'row' }}>
@@ -95,17 +100,18 @@ const ListaRubro = (props) => {
     return (
         <View style={{ flex: 1 }}>
             <Text style={estilosPrincipal.titulo}> Lista de rubros</Text>
-            <View style={{ flex: 0.9, marginHorizontal: 16, }}>
+            <View style={{ flex: 0.87, marginHorizontal: 16, }}>
                 <FlatList
                     data={listaOrdenada()}
                     renderItem={({ item }) => (crearItem(item))}
                     keyExtractor={item => item.id} />
             </View>
-            <View style={{ flex: 0.1, marginHorizontal: 16, alignItems: 'center' }}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ felx: 0.05, marginHorizontal: 5, }}><Button title="Actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button></View>
-                    <View style={{ felx: 0.05, marginHorizontal: 5, }}><Button title="Volver" style={{ position: 'absolute' }} onPress={() => props.volver()}></Button></View>
+            <View style={{ flex: 0.15, marginHorizontal: 16, alignItems: 'center', flexDirection: 'column' }}>
+                <View style={{ flexDirection: 'row', flex: 1 }}>
+                    <View style={{ felx: 0.5, marginHorizontal: 5, }}><Button title="Nuevo rubro" style={{ position: 'absolute' }} onPress={() => props.nuevoRubro()}></Button></View>
+                    <View style={{ felx: 0.5, marginHorizontal: 5, }}><Button title="Volver" style={{ position: 'absolute' }} onPress={() => props.volver()}></Button></View>
                 </View>
+                <View style={{ marginHorizontal: 5, }}><Button title="Actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button></View>
             </View>
         </View>
     )

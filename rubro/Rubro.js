@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Picker, Switch, Text, TextInput, View } from 'react-native';
 import estilosPrincipal from '../commons/main-styles.js';
 import { declareOpaqueType } from '@babel/types';
+import { urlJSONServer } from '../AppLab07';
 
 // const rubroDefault = {
 //     id: null,
@@ -16,10 +17,12 @@ const Rubro = (props) => {
     const [rubro, setRubro] = useState(props.rubro);
     const [guardar, setGuardar] = useState(false);
 
+    console.log('modo editar: ' + props.modoEditarRubro);
+
     useEffect(
         () => {
             const doPost = () => {
-                fetch('http://192.168.1.2:5000/rubros',
+                fetch(urlJSONServer + '/rubros',
                     {
                         method: 'POST',
                         headers: {
@@ -31,7 +34,7 @@ const Rubro = (props) => {
                     return response.json();
                 }).then(data => {
                     setGuardar(false);
-                    props.volverLista();
+                    props.volver();
                 })
                     .catch(response => {
                         console.log("error en api rest, en Rubro. Método POST");
@@ -39,7 +42,7 @@ const Rubro = (props) => {
                     });
             };
             const doPut = () => {
-                fetch('http://192.168.1.2:5000/rubros/' + rubro.id,
+                fetch(urlJSONServer + '/rubros/' + rubro.id,
                     {
                         method: 'PUT',
                         headers: {
@@ -59,12 +62,12 @@ const Rubro = (props) => {
                     });
             };
             if (guardar) {
-                if (props.modoEditar) {
+                if (props.modoEditarRubro) {
                     doPut();
                 } else {
                     doPost();
                 }
-                props.volverLista();
+                props.volver();
             };
         }
         , [guardar]

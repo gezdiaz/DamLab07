@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Style } from 'react'
 import { StyleSheet, View, Text, Button, SectionList, } from 'react-native';
 import estilosPrincipal from '../commons/main-styles';
+import { urlJSONServer } from '../AppLab07';
 
 const ListaClasificados = (props) => {
 
@@ -13,7 +14,7 @@ const ListaClasificados = (props) => {
 
     useEffect(() => {
         const getClasificados = () => {
-            fetch('http://192.168.1.2:5000/clasificados')
+            fetch(urlJSONServer + '/clasificados')
                 .then(res => {
                     return res.json()
                 })
@@ -22,6 +23,7 @@ const ListaClasificados = (props) => {
                     actualizarDatos(lista);
                     setActualizar(false);
                 })
+                .catch(err => console.log('Se produjo un error al obtener los clasificados:' + err))
         }
         console.log("useEffect actualizar: " + actualizar);
         if (actualizar) {
@@ -32,7 +34,7 @@ const ListaClasificados = (props) => {
 
     const actualizarDatos = (listaClasificados) => {
         console.log("funcion actualizarDatos");
-        fetch('http://192.168.1.2:5000/rubros')
+        fetch(urlJSONServer + '/rubros')
             .then(res => {
                 return res.json()
             })
