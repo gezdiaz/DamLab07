@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 const fondo = 'white';
-const primaryColor = '#7e57c2';
-const primaryLightColor = '#E1E2E1';
-const primaryDarkColor = '#4d2c91';
-const primaryTextColor = '#ffffff';
-const primaryDarkTextColor = '#000000';
+export const primaryColor = '#0091ea';
+export const primaryLightColor = '#64c1ff';
+export const primaryDarkColor = '#0064b7';
+export const primaryTextColor = '#ffffff';
+export const primaryDarkTextColor = '#000000';
 const colorInputTexto = '#1c313a';
 
-const estilosPrincipal = StyleSheet.create({
+export const estilosPrincipal = StyleSheet.create({
     contenedor: {
         flex: 1,
         flexDirection: 'column',
@@ -25,8 +25,14 @@ const estilosPrincipal = StyleSheet.create({
         width: '100%',
     },
     etiqueta: {
+        backgroundColor:primaryLightColor,
         color: primaryDarkTextColor,
         fontSize: 20,
+        alignSelf: "center",
+    },
+    etiquetaOfertaCatalogo: {
+        color: primaryDarkTextColor,
+        fontSize: 19,
         alignSelf: "center",
     },
     inputText: {
@@ -36,8 +42,36 @@ const estilosPrincipal = StyleSheet.create({
         width: '100%',
     },
     btnGuardar: {
-        width: '100%',
+        width: '50%',
         marginVertical: 5,
     },
 });
-export default estilosPrincipal;
+
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginHorizontal: 16,
+    },
+    item: {
+        backgroundColor: primaryLightColor,
+        padding: 20,
+        marginBottom: 8,
+        marginHorizontal:8,
+        borderRadius:10
+    },
+    header: {
+        fontSize: 32,
+        backgroundColor:primaryColor,
+        color:'white'
+    },
+    headerCentrado: {
+        fontSize: 32,
+        backgroundColor:primaryColor,
+        color:'white',
+        alignSelf:'center'
+    },
+    title: {
+        fontSize: 24,
+    },
+});
+
