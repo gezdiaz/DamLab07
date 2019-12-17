@@ -37,7 +37,7 @@ const Catalogo = (props) => {
     const [buscarEnApi, setBuscarEnApi] = useState(false);
     const [cambiarOferta, setCambiarOferta] = useState(false);
     const [guardarDatos, setGuardarDatos] = useState(false);
-    //const[showACtivityIndicator, setShowActivityIndicator] = useState (false);
+    const[showACtivityIndicator, setShowActivityIndicator] = useState (false);
 
     const [base64Icon, setBase64Icon] = useState('https://png.pngtree.com/element_our/png_detail/20181124/businessman-vector-icon-png_246587.jpg')
 
@@ -63,7 +63,7 @@ const Catalogo = (props) => {
                     method: 'GET'
 
                 }).then(res => {
-                    //    setShowActivityIndicator(true);
+                    setShowActivityIndicator(true);
                     return res.json()
                 })
                     .then(lista => {
@@ -75,11 +75,12 @@ const Catalogo = (props) => {
                             }
                         });
                         setListaResultado(listaSearchAPI);
-                        // setShowActivityIndicator(false)
+                        setShowActivityIndicator(false);
                     })
             };
 
             const doActualizarDatos = (clasificado) => {
+                setShowActivityIndicator(true);
                 fetch(urlJSONServer + '/clasificados/'.concat(clasificado.id.toString()), {
                     method: 'PUT',
                     headers: {
@@ -87,8 +88,8 @@ const Catalogo = (props) => {
                     },
                     body: JSON.stringify(clasificado)
                 }
-                )
-                    .then(res => {
+                )      .then(res => {
+                         setShowActivityIndicator(false);
                         return res.json()
                     })
                     .catch(error => console.log("error en api rest, en actualizar Clasificado."))
@@ -115,6 +116,7 @@ const Catalogo = (props) => {
             }
 
             if (guardarDatos) {
+                
                 listaResultado.forEach(clasificado => {
                     doActualizarDatos(clasificado);
                 });
@@ -167,7 +169,7 @@ const Catalogo = (props) => {
                     <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64Icon }}></Image>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ alignContent: 'center' }}>
-                            <Button color={'blue'} title="Ofertar" onPress={() => { item.oferta++; setCambiarOferta(true) }} /></View>
+                            <Button  color={'blue'} title="Ofertar" onPress={() => { item.oferta++; setCambiarOferta(true) }} /></View>
                     </View>
                 </View>);
         }
@@ -187,7 +189,7 @@ const Catalogo = (props) => {
 
             <Modal visible={modalIsShown} >
 
-                <ScrollView>
+                <ScrollView >
                     <View style={{ alignItems: 'center', margin: 5, flex: 1 }} >
                         <Text style={estilosPrincipal.titulo}>Buscar clasificado</Text>
                         <Text style={estilosPrincipal.etiqueta}>Buscar por rubro</Text>
@@ -208,11 +210,11 @@ const Catalogo = (props) => {
                                 <TextInput keyboardType={"numeric"} style={{ width: '100%', backgroundColor: '#E1E2E1' }} onChangeText={(val) => actualizarEstadoBuscar('precioMax', val)}></TextInput>
                             </View>
                         </View >
-                        <Text style={estilosPrincipal.etiqueta}>Buscar por cantidad de ofertas</Text>
+                        <Text style={estilosPrincipal.etiquetaOfertaCatalogo}>Buscar por cantidad de ofertas</Text>
                         <TextInput style={estilosPrincipal.inputText} keyboardType={"numeric"} onChangeText={(val) => actualizarEstadoBuscar('oferta', parseInt(val))}></TextInput>
                         <View style={{ alignContent: 'center', flexDirection: 'row', margin: 5 }}>
                             <View style={{ flex: 0.65, marginHorizontal: 5, marginBottom: 5 }}><Button title="Buscar" onPress={() => { setBuscarEnApi(true); }}></Button></View>
-                            <View style={{ flex: 0.35, marginHorizontal: 5, marginBottom: 5 }}><Button title="Cancelar"></Button></View>
+                            <View style={{ flex: 0.35, marginHorizontal: 4, marginBottom: 5 }}><Button title="Cancelar"></Button></View>
                         </View>
                     </View>
                 </ScrollView>
@@ -222,8 +224,6 @@ const Catalogo = (props) => {
                 <Text style={estilosPrincipal.titulo}> Resultados</Text>
             </View>
             <View style={{ flex: 0.83 }}>
-
-
                 <FlatList
                     style={{ marginBottom: 5 }}
                     data={listaResultado}
@@ -236,6 +236,7 @@ const Catalogo = (props) => {
                     <View style={{ flex: 0.5, marginHorizontal: 5, }}><Button title="Listo" style={{ position: 'absolute' }} onPress={() => setGuardarDatos(true)}></Button></View>
                 </View>
             </View>
+            <ActivityIndicator animating={showACtivityIndicator}></ActivityIndicator>
         </View>
     );
 }

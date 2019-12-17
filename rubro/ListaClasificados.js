@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Style } from 'react'
 import { StyleSheet, View, Text, Button, SectionList, } from 'react-native';
-import estilosPrincipal from '../commons/main-styles';
+import {primaryColor,primaryDarkColor,primaryLightColor,primaryTextColor,primaryDarkTextColor,estilosPrincipal,styles} from '../commons/main-styles';
 import { urlJSONServer } from '../AppLab07';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ListaClasificados = (props) => {
 
@@ -45,6 +46,10 @@ const ListaClasificados = (props) => {
             .catch(err => console.log("error en getRubros: " + err));
     }
 
+    const showClasificado = (clasificado)=>{
+        
+    }
+
     const crearData = (listaClasificados, listaRubros) => {
         var nuevoData = [];
         listaRubros.forEach(rubro => {
@@ -63,52 +68,34 @@ const ListaClasificados = (props) => {
         console.log("nuevoData: " + nuevoData);
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            marginHorizontal: 16,
-        },
-        item: {
-            backgroundColor: '#f9c2ff',
-            padding: 20,
-            marginVertical: 8,
-        },
-        header: {
-            fontSize: 32,
-        },
-        title: {
-            fontSize: 24,
-        },
-    });
-
-
+    
     function Item({ title }) {
         return (
             <View>
-                <Text>{title}</Text>
+                <Text style={styles.item}>{title}</Text>
             </View>
         );
     }
 
     return (
-        <View style={{ flex: 1 }}>
-            <Text style={estilosPrincipal.titulo}> Lista de clasificados</Text>
+        <View style={{ flex: 1 , backgroundColor: primaryColor}}>
+            <Text style={estilosPrincipal.titulo}>Lista de clasificados</Text>
             <View style={{ flex: 0.87 }}>
                 <SectionList
                     sections={data}
                     keyExtractor={(item, index) => item + index}
                     renderItem={({ item }) => <Item title={item} />}
                     renderSectionHeader={({ section: { title } }) => (
-                        <Text style={styles.header}>{title}</Text>
+                        <TouchableOpacity onPress={()=>{showClasificado(item)}}><Text style={styles.header}>{title}</Text></TouchableOpacity>
                     )}
                 />
             </View>
             <View style={{ flex: 0.13 }}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <View style={{ flex: 0.5 }}><Button title="Ver rubros" onPress={() => props.verRubros()}></Button></View>
-                    <View style={{ flex: 0.5 }}><Button title="Nuevo clasificado" onPress={() => props.nuevoClasificado()}></Button></View>
+                    <View style={{ flex: 0.5 }}><Button color={primaryDarkColor} title="Ver rubros" onPress={() => props.verRubros()}></Button></View>
+                    <View style={{ flex: 0.5 }}><Button color={primaryDarkColor} title="Nuevo clasificado" onPress={() => props.nuevoClasificado()}></Button></View>
                 </View>
-                <Button title="actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button>
+                <Button color={primaryDarkColor} title="actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button>
             </View>
         </View>
     )

@@ -12,5 +12,6 @@ import { name as appName } from './app.json';
 import 'react-native-gesture-handler';
 import ListaRubro from './rubro/ListaRubro';
 import AltaClasificado from './rubro/AltaClasificado';
+import {ShowClasificado} from './rubro/ShowClasificado';
 
-AppRegistry.registerComponent(appName, () => Catalogo);
+AppRegistry.registerComponent(appName, () => ShowClasificado);

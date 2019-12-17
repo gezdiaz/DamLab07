@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Style } from 'react'
 import { Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid, View, Text, Button, Modal } from 'react-native';
-import estilosPrincipal from '../commons/main-styles';
+import {estilosPrincipal} from '../commons/main-styles';
 import { TextInput, State } from 'react-native-gesture-handler';
 import { RNCamera } from 'react-native-camera'
 import { urlJSONServer } from '../AppLab07';
