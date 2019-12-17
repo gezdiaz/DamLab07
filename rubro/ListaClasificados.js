@@ -13,7 +13,7 @@ const ListaClasificados = (props) => {
 
     useEffect(() => {
         const getClasificados = () => {
-            fetch('http://192.168.1.2:5000/clasificados')
+            fetch('http://192.168.2.112:5000/clasificados')
                 .then(res => {
                     return res.json()
                 })
@@ -32,7 +32,7 @@ const ListaClasificados = (props) => {
 
     const actualizarDatos = (listaClasificados) => {
         console.log("funcion actualizarDatos");
-        fetch('http://192.168.1.2:5000/rubros')
+        fetch('http://192.168.2.112:5000/rubros')
             .then(res => {
                 return res.json()
             })

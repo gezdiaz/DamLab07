@@ -27,7 +27,7 @@ const estilosPrincipal = StyleSheet.create({
     etiqueta: {
         color: primaryDarkTextColor,
         fontSize: 20,
-        alignSelf: "flex-start",
+        alignSelf: "center",
     },
     inputText: {
         color: colorInputTexto,

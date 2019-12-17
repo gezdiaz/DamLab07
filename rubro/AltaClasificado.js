@@ -60,7 +60,7 @@ const AltaClasificado = (props) => {
     useEffect(
         () => {
             const doGet = () => {
-                fetch('http://192.168.1.2:5000/rubros')
+                fetch('http://192.168.1.3:5000/rubros/')
                     .then(res => {
                         return res.json()
                     })
@@ -70,7 +70,7 @@ const AltaClasificado = (props) => {
             };
 
             const doPost = () => {
-                fetch('http://192.168.1.2:5000/clasificados',
+                fetch('http://192.168.1.3:5000/clasificados/',
                     {
                         method: 'POST',
                         headers: {
@@ -136,7 +136,7 @@ const AltaClasificado = (props) => {
             <Text style={estilosPrincipal.etiqueta}>Descripción</Text>
             <TextInput style={estilosPrincipal.inputText} multiline={true} numberOfLines={5} onChangeText={val => actualizarEstadoAlta('descripcion', val)}> </TextInput>
             <Text style={estilosPrincipal.etiqueta}>Precio</Text>
-            <TextInput style={estilosPrincipal.inputText} keyboardType={"numeric"} onChangeText={val => actualizarEstadoAlta('precio', val)}> </TextInput>
+            <TextInput style={estilosPrincipal.inputText} keyboardType={"numeric"} onChangeText={val => actualizarEstadoAlta('precio', parseInt(val))}> </TextInput>
             <Text style={estilosPrincipal.etiqueta}>Su correo electrónico</Text>
 
             <TextInput style={estilosPrincipal.inputText}  keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico',val)}> </TextInput>
@@ -155,7 +155,7 @@ const AltaClasificado = (props) => {
                 return (
                 <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
                     <TouchableOpacity onPress={() => takePicture(camera)} style={capture}>
-                    <Text style={{ fontSize: 20, color:'white', textAlign:'center'}}>FOTO</Text>
+                        <Text style={{ fontSize: 20, color:'white', textAlign:'center'}}>FOTO</Text>
                     </TouchableOpacity>
                 </View>
                 );
@@ -167,7 +167,7 @@ const AltaClasificado = (props) => {
           <Image style={{alignSelf:'center', width: 300, height:300, marginVertical:10} } defaultSource={require('./persona.png')} source={{uri: base64Icon}}></Image>
           <View style={{flexDirection:'row', alignContent:'center'}}> 
         
-            <View style={{ flex: 0.65,marginHorizontal:5 }}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>
+            <View style={{ flex: 0.65,marginHorizontal:5, marginBottom:5}}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>
             <View style={{ flex: 0.35 ,marginHorizontal:5,marginBottom:5}}><Button title="Cancelar" onPress={() => props.volver()}></Button></View>
            
           </View> 

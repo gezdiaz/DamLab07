@@ -16,10 +16,11 @@ const clasificadoDefault = {
     rubro: rubroDefault,
     titulo: 'titulo default',
     descripcion: 'descripcion default',
-    precio: '0',
+    precio: 0,
     correoElectronico: 'xxx@xxx',
     fecha: new Date(),
-    // foto: require('./persona.png'),
+    foto: require('./rubro/persona.png'),
+    oferta: 0,
 }
 
 const AppLab07 = () => {

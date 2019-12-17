@@ -15,7 +15,7 @@ const ListaRubro = (props) => {
     useEffect(
         () => {
             const doGet = () => {
-                fetch('http://192.168.1.2:5000/rubros')
+                fetch('http://192.168.2.112:5000/rubros')
                     .then(res => {
                         return res.json()
                     })
@@ -25,7 +25,7 @@ const ListaRubro = (props) => {
                     })
             }
             const doDelete = () => {
-                fetch('http://192.168.1.2:5000/rubros/' + eliminarRubroi.id, {
+                fetch('http://192.168.2.112:5000/rubros' + eliminarRubroi.id, {
                     method: 'DELETE',
                     headers: {
                         'content-Type': 'application/json',
@@ -51,6 +51,7 @@ const ListaRubro = (props) => {
     )
 
     const doElimiarRubro = (item) => {
+        setEliminarRubroi(item);
         setModalIsShown(false);
         setEliminarRubro(true);
     }
@@ -76,7 +77,7 @@ const ListaRubro = (props) => {
                     <View style={{ marginHorizontal: 2.5 }}><Button title="Eliminar" onPress={() => setModalIsShown(true)} /></View>
                 </View>
 
-                <Modal transparent={'true'} visible={modalIsShown} >
+                <Modal transparent={true} visible={modalIsShown} >
                     <View style={{ backgroundColor: 'grey', marginBottom: 10, marginTop: 200, marginHorizontal: 75, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={estilosPrincipal.etiqueta, { justifyContent: 'center' }}>Esta seguro que desea eliminar el item?</Text>
                         <View style={{ flexDirection: 'row' }}>
