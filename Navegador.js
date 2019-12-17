@@ -8,6 +8,7 @@ import ListaClasificados from './rubro/ListaClasificados';
 import Catalogo from './rubro/Catalogo';
 import { createStackNavigator } from 'react-navigation-stack';
 import AltaClasificado from './rubro/AltaClasificado';
+import ShowClasificado from './rubro/ShowClasificado';
 
 const AppTabNavigator = createBottomTabNavigator({
     Clasificados: ListaClasificados,
@@ -38,6 +39,13 @@ const MainNavigator = createStackNavigator({
     },
     AltaClasificado: {
         screen: AltaClasificado,
+        navigationOptions: {
+            headerMode: "none",
+            header: null
+        }
+    },
+    ShowClasificado: {
+        screen: ShowClasificado,
         navigationOptions: {
             headerMode: "none",
             header: null

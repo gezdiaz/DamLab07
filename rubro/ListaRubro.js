@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Style } from 'react'
 import { View, Text, Button, Modal } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import estilosPrincipal from '../commons/main-styles';
+import { estilosPrincipal } from '../commons/main-styles';
 import { urlJSONServer } from '../AppLab07';
 
 const rubroDefault = {

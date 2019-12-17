@@ -68,8 +68,8 @@ const ListaClasificados = (p) => {
             .catch(err => console.log("error en getRubros: " + err));
     }
 
-    const showClasificado = (clasificado) => {
-
+    const showClasificado = (clasificadoVer) => {
+        navigate('ShowClasificado', { clasificado: clasificadoVer });
     }
 
     const crearData = (listaClasificados, listaRubros) => {
@@ -94,7 +94,7 @@ const ListaClasificados = (p) => {
     function Item({ title }) {
         return (
             <View>
-                <Text style={styles.item}>{title}</Text>
+                <TouchableOpacity onPress={() => { showClasificado(title) }}><Text style={styles.item}>{title}</Text></TouchableOpacity>
             </View>
         );
     }
@@ -108,7 +108,7 @@ const ListaClasificados = (p) => {
                     keyExtractor={(item, index) => item + index}
                     renderItem={({ item }) => <Item title={item} />}
                     renderSectionHeader={({ section: { title } }) => (
-                        <TouchableOpacity onPress={() => { showClasificado(item) }}><Text style={styles.header}>{title}</Text></TouchableOpacity>
+                        <Text style={styles.header}>{title}</Text>
                     )}
                 />
             </View>

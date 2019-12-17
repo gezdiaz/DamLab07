@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Picker, Switch, Text, TextInput, View } from 'react-native';
-import estilosPrincipal from '../commons/main-styles.js';
+import { estilosPrincipal } from '../commons/main-styles.js';
 import { declareOpaqueType } from '@babel/types';
 import { urlJSONServer } from '../AppLab07';
 

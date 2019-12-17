@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Style } from 'react'
 import { ActivityIndicator, FlatList, Image, ScrollView, Picker, View, Text, Button, Modal } from 'react-native';
-import estilosPrincipal from '../commons/main-styles';
+import { estilosPrincipal } from '../commons/main-styles';
 import { TextInput, State } from 'react-native-gesture-handler';
 import { urlJSONServer } from '../AppLab07';
 
@@ -37,7 +37,7 @@ const Catalogo = (props) => {
     const [buscarEnApi, setBuscarEnApi] = useState(false);
     const [cambiarOferta, setCambiarOferta] = useState(false);
     const [guardarDatos, setGuardarDatos] = useState(false);
-    const[showACtivityIndicator, setShowActivityIndicator] = useState (false);
+    const [showACtivityIndicator, setShowActivityIndicator] = useState(false);
 
     const [base64Icon, setBase64Icon] = useState('https://png.pngtree.com/element_our/png_detail/20181124/businessman-vector-icon-png_246587.jpg')
 
@@ -88,10 +88,10 @@ const Catalogo = (props) => {
                     },
                     body: JSON.stringify(clasificado)
                 }
-                )      .then(res => {
-                         setShowActivityIndicator(false);
-                        return res.json()
-                    })
+                ).then(res => {
+                    setShowActivityIndicator(false);
+                    return res.json()
+                })
                     .catch(error => console.log("error en api rest, en actualizar Clasificado."))
             };
 
@@ -116,7 +116,7 @@ const Catalogo = (props) => {
             }
 
             if (guardarDatos) {
-                
+
                 listaResultado.forEach(clasificado => {
                     doActualizarDatos(clasificado);
                 });
@@ -169,7 +169,7 @@ const Catalogo = (props) => {
                     <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64Icon }}></Image>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ alignContent: 'center' }}>
-                            <Button  color={'blue'} title="Ofertar" onPress={() => { item.oferta++; setCambiarOferta(true) }} /></View>
+                            <Button color={'blue'} title="Ofertar" onPress={() => { item.oferta++; setCambiarOferta(true) }} /></View>
                     </View>
                 </View>);
         }
