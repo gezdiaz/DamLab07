@@ -6,7 +6,10 @@ import { RNCamera } from 'react-native-camera'
 import { urlJSONServer } from '../AppLab07';
 
 
-const AltaClasificado = (props) => {
+const AltaClasificado = (p) => {
+
+    const props = p.navigation.state.params;
+    const navigation = p.navigation;
 
     const [takePhoto, setTakePhoto] = useState(false);
     const [base64Icon, setBase64Icon] = useState('https://png.pngtree.com/element_our/png_detail/20181124/businessman-vector-icon-png_246587.jpg')
@@ -83,7 +86,7 @@ const AltaClasificado = (props) => {
                     return response.json();
                 }).then(data => {
                     setGuardar(false);
-                    props.volver();
+                    volver();
                 })
                     .catch(response => {
                         console.log("error en api rest, en AltaClasificado. Método POST");
@@ -100,6 +103,11 @@ const AltaClasificado = (props) => {
             }
         }
     )
+
+    const volver = () => {
+        props.onGoBack();
+        navigation.goBack(null);
+    }
 
     const pickerItems = () => {
         return (
@@ -171,7 +179,7 @@ const AltaClasificado = (props) => {
             <View style={{ flexDirection: 'row', alignContent: 'center' }}>
 
                 <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>
-                <View style={{ flex: 0.35, marginHorizontal: 5, marginBottom: 5 }}><Button title="Cancelar" onPress={() => props.volver()}></Button></View>
+                <View style={{ flex: 0.35, marginHorizontal: 5, marginBottom: 5 }}><Button title="Cancelar" onPress={() => volver()}></Button></View>
 
             </View>
         </ScrollView>

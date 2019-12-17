@@ -3,14 +3,32 @@ import { StyleSheet, View, Text, Button, SectionList, } from 'react-native';
 import estilosPrincipal from '../commons/main-styles';
 import { urlJSONServer } from '../AppLab07';
 
-const ListaClasificados = (props) => {
+const rubroDefault = {
+    id: null,
+    descripcion: 'descripcion default',
+    orden: 1,
+    destacar: false
+}
+
+const clasificadoDefault = {
+    rubro: rubroDefault,
+    titulo: 'titulo default',
+    descripcion: 'descripcion default',
+    precio: 0,
+    correoElectronico: 'xxx@xxx',
+    fecha: new Date(),
+    foto: require('./persona.png'),
+    oferta: 0,
+}
+
+const ListaClasificados = (p) => {
+
+    const navigate = p.navigation.navigate;
 
     const [actualizar, setActualizar] = useState(true);
     const [data, setData] = useState([]);
 
-    console.log("antes de todo:");
-    console.log("actualizar: " + actualizar);
-    console.log("data: " + JSON.stringify(data));
+    console.log("Lista Clasificados");
 
     useEffect(() => {
         const getClasificados = () => {
@@ -31,6 +49,10 @@ const ListaClasificados = (props) => {
             getClasificados();
         }
     });
+
+    const doActualizar = () => {
+        setActualizar(true);
+    }
 
     const actualizarDatos = (listaClasificados) => {
         console.log("funcion actualizarDatos");
@@ -105,10 +127,10 @@ const ListaClasificados = (props) => {
             </View>
             <View style={{ flex: 0.13 }}>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <View style={{ flex: 0.5 }}><Button title="Ver rubros" onPress={() => props.verRubros()}></Button></View>
-                    <View style={{ flex: 0.5 }}><Button title="Nuevo clasificado" onPress={() => props.nuevoClasificado()}></Button></View>
+                    <View style={{ flex: 0.5 }}><Button title="Ver rubros" onPress={() => navigate('ListaRubro', { onGoBack: doActualizar })}></Button></View>
+                    <View style={{ flex: 0.5 }}><Button title="Nuevo clasificado" onPress={() => navigate('AltaClasificado', { clasificado: clasificadoDefault, modoEditar: false, onGoBack: doActualizar })}></Button></View>
                 </View>
-                <Button title="actualizar" style={{ position: 'absolute' }} onPress={() => setActualizar(true)}></Button>
+                <Button title="actualizar" style={{ position: 'absolute' }} onPress={() => doActualizar()}></Button>
             </View>
         </View>
     )

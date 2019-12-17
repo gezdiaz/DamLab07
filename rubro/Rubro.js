@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Picker, Switch, Text, TextInput, View } from 'react-native';
 import estilosPrincipal from '../commons/main-styles.js';
 import { declareOpaqueType } from '@babel/types';
+import { urlJSONServer } from '../AppLab07';
 
 // const rubroDefault = {
 //     id: null,
@@ -10,16 +11,27 @@ import { declareOpaqueType } from '@babel/types';
 //     destacar: false
 // }
 
-const Rubro = (props) => {
+const Rubro = (p) => {
+
+    const props = p.navigation.state.params;
+    const navigation = p.navigation;
 
     const [flag, setFlag] = useState(false);
     const [rubro, setRubro] = useState(props.rubro);
     const [guardar, setGuardar] = useState(false);
 
+    console.log('En Rubro');
+    console.log('Modo editar: ' + props.modoEditar);
+
+    const volver = () => {
+        props.onGoBack();
+        navigation.goBack(null);
+    }
+
     useEffect(
         () => {
             const doPost = () => {
-                fetch('http://192.168.1.2:5000/rubros',
+                fetch(urlJSONServer + '/rubros',
                     {
                         method: 'POST',
                         headers: {
@@ -31,7 +43,7 @@ const Rubro = (props) => {
                     return response.json();
                 }).then(data => {
                     setGuardar(false);
-                    props.volverLista();
+                    volver();
                 })
                     .catch(response => {
                         console.log("error en api rest, en Rubro. Método POST");
@@ -39,7 +51,7 @@ const Rubro = (props) => {
                     });
             };
             const doPut = () => {
-                fetch('http://192.168.1.2:5000/rubros/' + rubro.id,
+                fetch(urlJSONServer + '/rubros/' + rubro.id,
                     {
                         method: 'PUT',
                         headers: {
@@ -51,7 +63,7 @@ const Rubro = (props) => {
                     return response.json();
                 }).then(data => {
                     setGuardar(false);
-                    props.volverLista();
+                    volver();
                 })
                     .catch(response => {
                         console.log("error en api rest, en Rubro. Método PUT");
@@ -64,7 +76,7 @@ const Rubro = (props) => {
                 } else {
                     doPost();
                 }
-                props.volverLista();
+                //volver();
             };
         }
         , [guardar]
@@ -100,7 +112,7 @@ const Rubro = (props) => {
                 <Button style={estilosPrincipal.btnGuardar} title="Guardar" onPress={doGuardar} />
             </View>
             <View style={estilosPrincipal.btnGuardar}>
-                <Button title="volver" onPress={() => props.volver()} />
+                <Button title="volver" onPress={() => volver()} />
             </View>
         </View >
 
