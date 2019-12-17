@@ -5,6 +5,8 @@ import ListaRubro from './rubro/ListaRubro';
 import AltaClasificado from './rubro/AltaClasificado';
 import ListaClasificados from './rubro/ListaClasificados';
 
+export const urlJSONServer = 'http://192.168.0.6:5000';
+
 const rubroDefault = {
     id: null,
     descripcion: 'descripcion default',
@@ -23,7 +25,7 @@ const clasificadoDefault = {
     oferta: 0,
 }
 
-const AppLab07 = () => {
+export const AppLab07 = () => {
 
     const [modoRubro, setmodoRubro] = useState(false);
     const [modoListaRubro, setmodoListaRubro] = useState(false);
@@ -77,5 +79,3 @@ const AppLab07 = () => {
     }
 
 }
-
-export default AppLab07;
