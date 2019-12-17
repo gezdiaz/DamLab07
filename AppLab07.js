@@ -5,7 +5,7 @@ import ListaRubro from './rubro/ListaRubro';
 import AltaClasificado from './rubro/AltaClasificado';
 import ListaClasificados from './rubro/ListaClasificados';
 
-export const urlJSONServer = 'http://192.168.0.6:5000';
+export const urlJSONServer = 'http://192.168.1.6:5000';
 
 const rubroDefault = {
     id: null,
