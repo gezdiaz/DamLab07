@@ -236,7 +236,7 @@ const Catalogo = (props) => {
                     <View style={{ flex: 0.5, marginHorizontal: 5, }}><Button title="Listo" style={{ position: 'absolute' }} onPress={() => setGuardarDatos(true)}></Button></View>
                 </View>
             </View>
-            <ActivityIndicator animating={showACtivityIndicator}></ActivityIndicator>
+            <ActivityIndicator  animating={showACtivityIndicator}></ActivityIndicator>
         </View>
     );
 }

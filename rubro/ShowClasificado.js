@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ShowClasificado = (p) => {
 
+    const navigate = p.navigation.navigate;
     const props = p.navigation.state.params;
     var fechaAMostrar = new Date(props.clasificado.fecha);
     var base64IconPrefijo = 'data:image/jpg;base64, '
@@ -32,7 +33,7 @@ const ShowClasificado = (p) => {
                 <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10, backgroundColor: primaryColor }} defaultSource={require('./persona.png')} source={{uri:base64IconPrefijo.concat(props.clasificado.foto.base64)}}></Image>
                 <View style={{ alignItems: 'center', flexDirection: 'row', alignContent: 'center', marginBottom: 70 }}>
 
-                    <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button color={primaryDarkColor} title="Editar" onPress={() => props.verRubros()}></Button></View>
+                    <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button color={primaryDarkColor} title="Editar" onPress={() => navigate('AltaClasificado', { clasificado: props.clasificado, modoEditar: true})}></Button></View>
                     <View style={{ flex: 0.35, marginHorizontal: 5 }}><Button color={primaryDarkColor} title="Volver" onPress={() => props.verRubros()}></Button></View>
                 </View>
             </ScrollView>

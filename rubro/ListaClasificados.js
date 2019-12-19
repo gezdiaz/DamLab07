@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Style } from 'react'
-import { StyleSheet, View, Text, Button, SectionList, } from 'react-native';
+import { StyleSheet, View, Text, Button, SectionList } from 'react-native';
 import { primaryColor, primaryDarkColor, primaryLightColor, primaryTextColor, primaryDarkTextColor, estilosPrincipal, styles } from '../commons/main-styles';
 import { urlJSONServer } from '../AppLab07';
 import { TouchableOpacity } from 'react-native-gesture-handler';

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, Style } from 'react'
-import { Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid, View, Text, Button, Modal } from 'react-native';
-import {estilosPrincipal} from '../commons/main-styles';
+import {KeyboardAvoidingView , ActivityIndicator, Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid, View, Text, Button, Modal } from 'react-native';
+import {estilosPrincipal,primaryColor} from '../commons/main-styles';
 import { TextInput, State } from 'react-native-gesture-handler';
 import { RNCamera } from 'react-native-camera'
 import { urlJSONServer } from '../AppLab07';
+import { styles } from '../commons/main-styles';
 
 
 const AltaClasificado = (p) => {
@@ -17,12 +18,13 @@ const AltaClasificado = (p) => {
     const [listaRubros, setListaRubros] = useState([]);
     const [actualizarLista, setActualizarLista] = useState(true);
     const [guardarClasificado, setGuardar] = useState(false);
+    const [showActivityIndicator, setShowActivityIndicator] = useState(false);
 
     const fechaMinima = new Date();
     const options = {
-        date: new Date(fechaMinima.getFullYear + 100, 11, 31),
-        minDate: new Date(fechaMinima.getFullYear(), fechaMinima.getMonth(), fechaMinima.getDay() + 9),
-        maxDate: new Date(fechaMinima.getFullYear() + 100, fechaMinima.getMonth(), fechaMinima.getDay()),
+        date: fechaMinima,
+        minDate: new Date(fechaMinima.getFullYear(), fechaMinima.getMonth(), fechaMinima.getDate()+1),
+        maxDate: new Date(fechaMinima.getFullYear() + 100, fechaMinima.getMonth(), fechaMinima.getDate()),
         mode: 'calendar',
     }
 
@@ -46,7 +48,7 @@ const AltaClasificado = (p) => {
             const { action, year, month, day } = await DatePickerAndroid.open(
                 //options
                 {
-                    date: new Date(),
+                    date: options.date,
                     minDate: options.minDate,
                     maxDate: options.maxDate,
                     mode: options.mode
@@ -94,12 +96,34 @@ const AltaClasificado = (p) => {
                     });
             };
 
+            const doUpdate = () => {
+                setShowActivityIndicator(true);
+                fetch(urlJSONServer + '/clasificados/'.concat(clasificado.id.toString()), {
+                    method: 'PUT',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(clasificado)
+                }
+                ).then(res => {
+                    setGuardar(false);
+                    setShowActivityIndicator(false);
+                    return res.json()
+                })
+                    .catch(error => console.log("error en api rest, en actualizar Clasificado."))
+            };
+
             if (actualizarLista) {
                 doGet();
                 setActualizarLista(false);
             }
             if (guardarClasificado) {
-                doPost();
+                if(props.modoEditar){
+                    doUpdate();
+                }
+                else{
+                    doPost();
+                }
             }
         }
     )
@@ -133,57 +157,116 @@ const AltaClasificado = (p) => {
         setClasificado(nuevo);
     }
 
-    return (
-        <ScrollView >
-            <Text style={estilosPrincipal.titulo}> NUEVO CLASIFICADO</Text>
-            <Text style={estilosPrincipal.etiqueta}  >Seleccionar rubro</Text>
-            <Picker selectedValue={clasificado.rubro} style={{ width: '50%' }}
-                onValueChange={val => actualizarEstadoAlta('rubro', val)}>
-                {pickerItems()}
-            </Picker>
-            <Text style={estilosPrincipal.etiqueta}>Titulo</Text>
-            <TextInput style={estilosPrincipal.inputText} onChangeText={val => actualizarEstadoAlta('titulo', val)}> </TextInput>
-            <Text style={estilosPrincipal.etiqueta}>Descripción</Text>
-            <TextInput style={estilosPrincipal.inputText} multiline={true} numberOfLines={5} onChangeText={val => actualizarEstadoAlta('descripcion', val)}> </TextInput>
-            <Text style={estilosPrincipal.etiqueta}>Precio</Text>
-            <TextInput style={estilosPrincipal.inputText} keyboardType={"numeric"} onChangeText={val => actualizarEstadoAlta('precio', parseInt(val))}> </TextInput>
-            <Text style={estilosPrincipal.etiqueta}>Su correo electrónico</Text>
-
-            <TextInput style={estilosPrincipal.inputText} keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico', val)}> </TextInput>
-            <View style={{ borderWidth: 5, borderColor: 'violet', borderRadius: 10, marginHorizontal: 10, marginBottom: 10, marginTop: 10, backgroundColor: 'violet' }}>
-                <TouchableWithoutFeedback
-                    onPress={showDatePicker.bind(this)}>
-                    <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}> Seleccionar fecha fin oferta</Text>
-                </TouchableWithoutFeedback></View>
-            <Button style={estilosPrincipal.btnGuardar} title="Tomar foto" onPress={() => setTakePhoto(true)}></Button>
-            <Modal visible={takePhoto}>
-                <RNCamera
-                    autoFocus={RNCamera.Constants.AutoFocus.on}
-                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                    {({ camera, status }) => {
-                        if (status == 'READY') {
-                            return (
-                                <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
-                                    <TouchableOpacity onPress={() => takePicture(camera)} style={capture}>
-                                        <Text style={{ fontSize: 20, color: 'white', textAlign: 'center' }}>FOTO</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            );
-                        }
-                    }}
-
-                </RNCamera>
-            </Modal>
-
-            <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64Icon }}></Image>
-            <View style={{ flexDirection: 'row', alignContent: 'center' }}>
-
-                <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>
-                <View style={{ flex: 0.35, marginHorizontal: 5, marginBottom: 5 }}><Button title="Cancelar" onPress={() => volver()}></Button></View>
-
+    if(p.navigation.state.params.modoEditar){
+        return(
+            <View style={{flex: 1}}>
+                <Text style={estilosPrincipal.titulo}>NUEVO CLASIFICADO</Text>
+                <ScrollView style={{backgroundColor:primaryColor, flex: 0.9}}>
+                    <Text style={styles.header} >Seleccionar rubro</Text>
+                    <Picker  selectedValue={clasificado.rubro} style={{ width: '50%' , alignSelf:'center'},styles.item}
+                        onValueChange={val => actualizarEstadoAlta('rubro', val)}>
+                        {pickerItems()}
+                    </Picker>
+                    <Text style={styles.header}>Titulo</Text>
+                    <TextInput  defaultValue={props.clasificado.titulo} style={estilosPrincipal.inputText} onChangeText={val => actualizarEstadoAlta('titulo', val)}> </TextInput>
+                    <Text style={styles.header}>Descripción</Text>
+                    <TextInput defaultValue={props.clasificado.descripcion} style={estilosPrincipal.inputText} multiline={true} numberOfLines={5} onChangeText={val => actualizarEstadoAlta('descripcion', val)}> </TextInput>
+                    <Text style={styles.header}>Precio</Text>
+                    <TextInput defaultValue={props.clasificado.precio.toString()} style={estilosPrincipal.inputText} keyboardType={"numeric"} onChangeText={val => actualizarEstadoAlta('precio', parseInt(val))}> </TextInput>
+                    <Text style={styles.header}>Su correo electrónico</Text>
+        
+                    <TextInput defaultValue={props.clasificado.correoElectronico} style={estilosPrincipal.inputText} keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico', val)}> </TextInput>
+                    <View style={{ borderWidth: 5, borderColor: 'violet', borderRadius: 10, marginHorizontal: 10, marginBottom: 10, marginTop: 10, backgroundColor: 'violet' }}>
+                        <TouchableWithoutFeedback
+                            onPress={showDatePicker.bind(this)}>
+                            <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}> Seleccionar fecha fin oferta</Text>
+                        </TouchableWithoutFeedback></View>
+                    <Button style={estilosPrincipal.btnGuardar} title="Tomar foto" onPress={() => setTakePhoto(true)}></Button>
+                    <Modal visible={takePhoto}>
+                        <RNCamera
+                            autoFocus={RNCamera.Constants.AutoFocus.on}
+                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                            {({ camera, status }) => {
+                                if (status == 'READY') {
+                                    return (
+                                        <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+                                            <TouchableOpacity onPress={() => takePicture(camera)} style={capture}>
+                                                <Text style={{ fontSize: 20, color: 'white', textAlign: 'center' }}>FOTO</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    );
+                                }
+                            }}
+        
+                        </RNCamera>
+                    </Modal>
+        
+                    <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64IconPrefijo.concat(clasificado.foto.base64) }}></Image>
+                    <View style={{ flexDirection: 'row', alignContent: 'center' }}>
+        
+                        <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>
+                        <View style={{ flex: 0.35, marginHorizontal: 5, marginBottom: 5 }}><Button title="Cancelar" onPress={() => volver()}></Button></View>
+                        
+                    </View>
+                    
+                </ScrollView>
+                <ActivityIndicator style={{flex: 0.1, backgroundColor:primaryColor}} color={'white'} size={'large'}  animating={showActivityIndicator}></ActivityIndicator>
             </View>
-        </ScrollView>
-    );
+        );
+    }
+    else{
+        return (
+            <ScrollView style={{backgroundColor:primaryColor}}>
+                <Text style={estilosPrincipal.titulo}>NUEVO CLASIFICADO</Text>
+                <Text style={styles.header}  >Seleccionar rubro</Text>
+                <Picker selectedValue={clasificado.rubro} style={{ width: '50%' , alignSelf:'center'},styles.item}
+                    onValueChange={val => actualizarEstadoAlta('rubro', val)}>
+                    {pickerItems()}
+                </Picker>
+                <Text style={styles.header}>Titulo</Text>
+                <TextInput style={estilosPrincipal.inputText} onChangeText={val => actualizarEstadoAlta('titulo', val)}> </TextInput>
+                <Text style={styles.header}>Descripción</Text>
+                <TextInput style={estilosPrincipal.inputText} multiline={true} numberOfLines={5} onChangeText={val => actualizarEstadoAlta('descripcion', val)}> </TextInput>
+                <Text style={styles.header}>Precio</Text>
+                <TextInput style={estilosPrincipal.inputText} keyboardType={"numeric"} onChangeText={val => actualizarEstadoAlta('precio', parseInt(val))}> </TextInput>
+                <Text style={styles.header}>Su correo electrónico</Text>
+    
+                <TextInput style={estilosPrincipal.inputText} keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico', val)}> </TextInput>
+                <View style={{ borderWidth: 5, borderColor: 'violet', borderRadius: 10, marginHorizontal: 10, marginBottom: 10, marginTop: 10, backgroundColor: 'violet' }}>
+                    <TouchableWithoutFeedback
+                        onPress={showDatePicker.bind(this)}>
+                        <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}> Seleccionar fecha fin oferta</Text>
+                    </TouchableWithoutFeedback></View>
+                <Button style={estilosPrincipal.btnGuardar} title="Tomar foto" onPress={() => setTakePhoto(true)}></Button>
+                <Modal visible={takePhoto}>
+                    <RNCamera
+                        autoFocus={RNCamera.Constants.AutoFocus.on}
+                        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                        {({ camera, status }) => {
+                            if (status == 'READY') {
+                                return (
+                                    <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+                                        <TouchableOpacity onPress={() => takePicture(camera)} style={capture}>
+                                            <Text style={{ fontSize: 20, color: 'white', textAlign: 'center' }}>FOTO</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                );
+                            }
+                        }}
+    
+                    </RNCamera>
+                </Modal>
+    
+                <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64Icon }}></Image>
+                <View style={{ flexDirection: 'row', alignContent: 'center' }}>
+    
+                    <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>
+                    <View style={{ flex: 0.35, marginHorizontal: 5, marginBottom: 5 }}><Button title="Cancelar" onPress={() => volver()}></Button></View>
+    
+                </View>
+            </ScrollView>
+        );
+    }
 
 }
 

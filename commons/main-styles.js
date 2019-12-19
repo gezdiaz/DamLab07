@@ -28,6 +28,7 @@ export const estilosPrincipal = StyleSheet.create({
         backgroundColor:primaryLightColor,
         color: primaryDarkTextColor,
         fontSize: 20,
+        
         alignSelf: "center",
     },
     etiquetaOfertaCatalogo: {
@@ -36,14 +37,18 @@ export const estilosPrincipal = StyleSheet.create({
         alignSelf: "center",
     },
     inputText: {
-        color: colorInputTexto,
+        alignSelf: 'center',
         backgroundColor: primaryLightColor,
+        padding: 10,
+        marginBottom: 8,
+        borderRadius:10,
         fontSize: 18,
-        width: '100%',
+        width: '95%',
     },
     btnGuardar: {
         width: '50%',
         marginVertical: 5,
+        borderRadius: 10,
     },
 });
 
@@ -60,6 +65,7 @@ export const styles = StyleSheet.create({
         borderRadius:10
     },
     header: {
+        marginHorizontal:5,
         fontSize: 32,
         backgroundColor:primaryColor,
         color:'white'
