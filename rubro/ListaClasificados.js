@@ -22,6 +22,8 @@ const clasificadoDefault = {
     oferta: 0,
 }
 
+var listaClasificadosGlobal = [];
+
 const ListaClasificados = (p) => {
 
     const navigate = p.navigation.navigate;
@@ -38,6 +40,7 @@ const ListaClasificados = (p) => {
                     return res.json()
                 })
                 .then(lista => {
+                    listaClasificadosGlobal = lista;
                     console.log("lista de clacificados recibida: " + lista);
                     actualizarDatos(lista);
                     setActualizar(false);
@@ -71,16 +74,31 @@ const ListaClasificados = (p) => {
     const showClasificado = (clasificadoVer) => {
         navigate('ShowClasificado', { clasificado: clasificadoVer });
     }
-
+    const getElementosAMostar = () =>{
+        var elementoAMostar = {};
+                        
+            var dataAMostar = [elementoAMostar];
+            
+            data.forEach(element => {
+                elementoAMostar.rubro = element.rubro.descripcion;
+                //elementoAMostar.listaClasificado = element.data.toString();
+                dataAMostar.push(elementoAMostar);
+            });
+            return (dataAMostar);
+    }
     const crearData = (listaClasificados, listaRubros) => {
+
         var nuevoData = [];
         listaRubros.forEach(rubro => {
             var elemento = {};
+            // elemento.title = rubro.descripcion;
             elemento.title = rubro.descripcion;
             elemento.data = [];
             listaClasificados.forEach(clasificado => {
                 if (clasificado.rubro.descripcion === rubro.descripcion) {
-                    elemento.data.push(clasificado.titulo);
+                    // elemento.data.push('Id: '.concat(clasificado.id).concat('\n').concat(clasificado.titulo));
+                    elemento.data.push(clasificado);
+
                 }
             })
             nuevoData.push(elemento);
@@ -92,9 +110,14 @@ const ListaClasificados = (p) => {
 
 
     function Item({ title }) {
-        return (
+        console.log(title);
+       
+    }
+
+    function crearItem(clasificado){
+         return (
             <View>
-                <TouchableOpacity onPress={() => { showClasificado(title) }}><Text style={styles.item}>{title}</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => { showClasificado(clasificado) }}><Text style={styles.item}>{clasificado.titulo}</Text></TouchableOpacity>
             </View>
         );
     }
@@ -106,7 +129,7 @@ const ListaClasificados = (p) => {
                 <SectionList
                     sections={data}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({ item }) => <Item title={item} />}
+                    renderItem={({ item }) => crearItem(item)}
                     renderSectionHeader={({ section: { title } }) => (
                         <Text style={styles.header}>{title}</Text>
                     )}
