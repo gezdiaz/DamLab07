@@ -9,10 +9,13 @@ import Catalogo from './rubro/Catalogo';
 import { createStackNavigator } from 'react-navigation-stack';
 import AltaClasificado from './rubro/AltaClasificado';
 import ShowClasificado from './rubro/ShowClasificado';
+import Configuracion from './rubro/Configuracion';
 
 const AppTabNavigator = createBottomTabNavigator({
     Clasificados: ListaClasificados,
     Catalogo: Catalogo,
+    Rubros: ListaRubro,
+    Configuracion: Configuracion
 });
 
 const MainNavigator = createStackNavigator({

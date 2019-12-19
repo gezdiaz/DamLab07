@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Picker, Switch, Text, TextInput, View } from 'react-native';
-import { estilosPrincipal } from '../commons/main-styles.js';
+import { estilosPrincipal,primaryColor,styles} from '../commons/main-styles.js';
 import { declareOpaqueType } from '@babel/types';
 import { urlJSONServer } from '../AppLab07';
 
@@ -93,17 +93,17 @@ const Rubro = (p) => {
 
     return (
         <View style={estilosPrincipal.contenedor}>
-            <Text style={estilosPrincipal.titulo}>Rubro</Text>
-            <Text style={estilosPrincipal.etiqueta}>Nombre</Text>
+            <Text style={estilosPrincipal.titulo}>  Rubro</Text>
+            <Text style={styles.header}>Nombre</Text>
             <TextInput value={rubro.descripcion} style={estilosPrincipal.inputText}
                 onChangeText={val => actualizarEstado('descripcion', val)} />
-            <Text style={estilosPrincipal.etiqueta}>Orden en el catalogo</Text>
+            <Text style={styles.headerOrdenRubro}>Orden en el catalogo</Text>
             <Picker selectedValue={rubro.orden} style={{ width: '50%' }}
                 onValueChange={val => actualizarEstado('orden', val)}>
                 <Picker.Item style={{ color: '#fff' }} label="#1" value="1" />
                 <Picker.Item style={{ color: '#fff' }} label="#2" value="2" />
             </Picker>
-            <Text style={estilosPrincipal.etiqueta}>Destacar</Text>
+            <Text style={styles.header}>Destacar</Text>
             <Switch
                 value={rubro.destacar}
                 onValueChange={val => actualizarEstado('destacar', val)}

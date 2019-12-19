@@ -130,7 +130,7 @@ const AltaClasificado = (p) => {
 
     const volver = () => {
         props.onGoBack();
-        navigation.goBack(null);
+        p.navigation.goBack(null);
     }
 
     const pickerItems = () => {
@@ -157,6 +157,7 @@ const AltaClasificado = (p) => {
         setClasificado(nuevo);
     }
 
+  
     if(p.navigation.state.params.modoEditar){
         return(
             <View style={{flex: 1}}>

@@ -72,20 +72,9 @@ const ListaClasificados = (p) => {
     }
 
     const showClasificado = (clasificadoVer) => {
-        navigate('ShowClasificado', { clasificado: clasificadoVer });
+        navigate('ShowClasificado', { clasificado: clasificadoVer, onGoBack:doActualizar });
     }
-    const getElementosAMostar = () =>{
-        var elementoAMostar = {};
-                        
-            var dataAMostar = [elementoAMostar];
-            
-            data.forEach(element => {
-                elementoAMostar.rubro = element.rubro.descripcion;
-                //elementoAMostar.listaClasificado = element.data.toString();
-                dataAMostar.push(elementoAMostar);
-            });
-            return (dataAMostar);
-    }
+   
     const crearData = (listaClasificados, listaRubros) => {
 
         var nuevoData = [];
@@ -109,23 +98,18 @@ const ListaClasificados = (p) => {
     }
 
 
-    function Item({ title }) {
-        console.log(title);
-       
-    }
-
     function crearItem(clasificado){
          return (
-            <View>
-                <TouchableOpacity onPress={() => { showClasificado(clasificado) }}><Text style={styles.item}>{clasificado.titulo}</Text></TouchableOpacity>
-            </View>
+            
+            <TouchableOpacity onPress={() => { showClasificado(clasificado) }}><Text style={styles.item}>{clasificado.titulo}</Text></TouchableOpacity>
+           
         );
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: primaryColor }}>
             <Text style={estilosPrincipal.titulo}>Lista de clasificados</Text>
-            <View style={{ flex: 0.87 }}>
+            <View style={{ flex: 0.8 }}>
                 <SectionList
                     sections={data}
                     keyExtractor={(item, index) => item + index}
@@ -135,12 +119,10 @@ const ListaClasificados = (p) => {
                     )}
                 />
             </View>
-            <View style={{ flex: 0.13 }}>
-                <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <View style={{ flex: 0.5 }}><Button color={primaryDarkColor} title="Ver rubros" onPress={() => navigate('ListaRubro', { onGoBack: doActualizar })}></Button></View>
-                    <View style={{ flex: 0.5 }}><Button color={primaryDarkColor} title="Nuevo clasificado" onPress={() => navigate('AltaClasificado', { clasificado: clasificadoDefault, modoEditar: false, onGoBack: doActualizar })}></Button></View>
-                </View>
-                <Button color={primaryDarkColor} title="actualizar" style={{ position: 'absolute' }} onPress={() => doActualizar()}></Button>
+            <View style={{ flex: 0.2 }}>
+                
+                <View style={{ margin:5}}><Button color={primaryDarkColor} title="Nuevo Clasificado" onPress={() => navigate('AltaClasificado', { clasificado: clasificadoDefault, modoEditar: false, onGoBack: doActualizar })}></Button></View>
+                <View style={{marginBottom:5,marginHorizontal:5}}><Button color={primaryDarkColor} title="actualizar" style={{ position: 'absolute' }} onPress={() => doActualizar()}></Button></View>
             </View>
         </View>
     )

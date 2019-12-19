@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Style } from 'react'
 import { ActivityIndicator, FlatList, Image, ScrollView, Picker, View, Text, Button, Modal } from 'react-native';
-import { estilosPrincipal } from '../commons/main-styles';
+import { estilosPrincipal, primaryColor, styles, primaryTextColor,primaryDarkColor } from '../commons/main-styles';
 import { TextInput, State } from 'react-native-gesture-handler';
 import { urlJSONServer } from '../AppLab07';
 
@@ -149,7 +149,7 @@ const Catalogo = (props) => {
         setBase64Icon(base64IconPrefijo.concat(item.foto.base64));
         if (item.rubro.destacar) {
             return (
-                <View style={{ margin: 5, alignItems: 'center' }}>
+                <View style={{backgroundColor:primaryColor, margin: 5, alignItems: 'center' }}>
                     <Text style={{ fontSize: 20, }}>{item.titulo}</Text>
                     <Text style={{ fontSize: 20, }}>Precio:  ${item.precio}</Text>
                     <Text style={{ fontSize: 20, }}>Cantidad Ofertas: {item.oferta}</Text>
@@ -162,7 +162,7 @@ const Catalogo = (props) => {
         }
         else {
             return (
-                <View style={{ margin: 5, alignItems: 'center' }}>
+                <View style={{ backgroundColor:primaryColor,margin: 5, alignItems: 'center'}}>
                     <Text style={{ fontSize: 20, }}>{item.titulo}</Text>
                     <Text style={{ fontSize: 20, }}>Precio:  ${item.precio}</Text>
                     <Text style={{ fontSize: 20, }}>Cantidad Ofertas: {item.oferta}</Text>
@@ -185,58 +185,61 @@ const Catalogo = (props) => {
 
     }
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1,backgroundColor:primaryTextColor}}>
 
-            <Modal visible={modalIsShown} >
+            <Modal visible={modalIsShown} presentationStyle={'fullScreen'}>
 
                 <ScrollView >
-                    <View style={{ alignItems: 'center', margin: 5, flex: 1 }} >
+                    <View style={{backgroundColor:primaryColor, alignItems: 'center', margin: 5, flex: 1 }} >
                         <Text style={estilosPrincipal.titulo}>Buscar clasificado</Text>
-                        <Text style={estilosPrincipal.etiqueta}>Buscar por rubro</Text>
+                        <Text style={styles.headerBuscar}>Buscar por rubro</Text>
                         <Picker selectedValue={rubroSeleccionado} style={{ width: '80%' }}
                             onValueChange={val => actualizarEstadoBuscar('rubro', val)}>
                             {pickerItems()}
                         </Picker>
-                        <Text style={estilosPrincipal.etiqueta}>Buscar por titulo</Text>
+                        <Text style={styles.headerBuscar}>Buscar por titulo</Text>
                         <TextInput style={estilosPrincipal.inputText} onChangeText={(val) => actualizarEstadoBuscar('titulo', val)}></TextInput>
                         <View style={{ flexDirection: 'row', flex: 1 }}>
                             <View style={estilosPrincipal.etiqueta, { flexDirection: 'column', margin: 5, flex: 0.5 }}>
-                                <Text style={estilosPrincipal.etiqueta} >Precio min</Text>
-                                <TextInput keyboardType={"numeric"} style={{ width: '100%', backgroundColor: '#E1E2E1' }} onChangeText={(val) => actualizarEstadoBuscar('precioMin', val)}></TextInput>
+                                <Text style={styles.headerBuscar}>Precio min</Text>
+                                <TextInput keyboardType={"numeric"} style={estilosPrincipal.inputText} onChangeText={(val) => actualizarEstadoBuscar('precioMin', val)}></TextInput>
                             </View>
 
                             <View style={{ flexDirection: 'column', margin: 5, flex: 0.5 }}>
-                                <Text style={estilosPrincipal.etiqueta} keyboardType={"numeric"}>Precio max</Text>
-                                <TextInput keyboardType={"numeric"} style={{ width: '100%', backgroundColor: '#E1E2E1' }} onChangeText={(val) => actualizarEstadoBuscar('precioMax', val)}></TextInput>
+                                <Text style={styles.headerBuscar} keyboardType={"numeric"}>Precio max</Text>
+                                <TextInput keyboardType={"numeric"} style={estilosPrincipal.inputText} onChangeText={(val) => actualizarEstadoBuscar('precioMax', val)}></TextInput>
                             </View>
                         </View >
                         <Text style={estilosPrincipal.etiquetaOfertaCatalogo}>Buscar por cantidad de ofertas</Text>
                         <TextInput style={estilosPrincipal.inputText} keyboardType={"numeric"} onChangeText={(val) => actualizarEstadoBuscar('oferta', parseInt(val))}></TextInput>
                         <View style={{ alignContent: 'center', flexDirection: 'row', margin: 5 }}>
                             <View style={{ flex: 0.65, marginHorizontal: 5, marginBottom: 5 }}><Button title="Buscar" onPress={() => { setBuscarEnApi(true); }}></Button></View>
-                            <View style={{ flex: 0.35, marginHorizontal: 4, marginBottom: 5 }}><Button title="Cancelar"></Button></View>
+                            <View style={{ flex: 0.35, marginHorizontal: 4, marginBottom: 5 }}><Button title="Cancelar" onPress={()=>setModalIsShown(false)}></Button></View>
                         </View>
                     </View>
                 </ScrollView>
             </Modal>
 
-            <View style={{ flex: 0.07 }}>
-                <Text style={estilosPrincipal.titulo}> Resultados</Text>
+            <View style={{ flex: 0.1, flexDirection:'row',backgroundColor:primaryDarkColor } }>
+               
+                <Text style={estilosPrincipal.tituloResultadoBusqueda}> Resultados</Text>
+                <ActivityIndicator style={{marginLeft:50, flex:0.2,backgroundColor:primaryDarkColor}} size={"large"} color={'white'} animating={showACtivityIndicator}></ActivityIndicator>
             </View>
-            <View style={{ flex: 0.83 }}>
+  
+            <View style={{ flex: 0.91, backgroundColor:primaryTextColor }}>
                 <FlatList
-                    style={{ marginBottom: 5 }}
+                    style={{backgroundColor:primaryColor }}
                     data={listaResultado}
                     renderItem={({ item }) => (crearItem(item))}
                     keyExtractor={item => item.id} />
             </View>
-            <View style={{ flex: 0.1, marginHorizontal: 16, alignItems: 'center' }}>
+            <View style={{backgroundColor:primaryColor, flex: 0.08, alignItems: 'center',paddingTop:5}}>
                 <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flex: 0.5, marginHorizontal: 5, }}><Button title="Buscar" style={{ position: 'absolute' }} onPress={() => setModalIsShown(true)}></Button></View>
-                    <View style={{ flex: 0.5, marginHorizontal: 5, }}><Button title="Listo" style={{ position: 'absolute' }} onPress={() => setGuardarDatos(true)}></Button></View>
+                    <View style={{ flex: 0.5, marginHorizontal: 5 }}><Button color={primaryDarkColor} title="Buscar" style={{ position: 'absolute' }} onPress={() => setModalIsShown(true)}></Button></View>
+                    <View style={{ flex: 0.5, marginHorizontal: 5  }}><Button color={primaryDarkColor}  title="Listo" style={{ position: 'absolute' }} onPress={() => setGuardarDatos(true)}></Button></View>
                 </View>
             </View>
-            <ActivityIndicator  animating={showACtivityIndicator}></ActivityIndicator>
+           
         </View>
     );
 }

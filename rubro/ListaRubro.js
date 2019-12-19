@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Style } from 'react'
 import { View, Text, Button, Modal } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { estilosPrincipal } from '../commons/main-styles';
+import { estilosPrincipal, primaryColor,primaryDarkColor, styles } from '../commons/main-styles';
 import { urlJSONServer } from '../AppLab07';
 
 const rubroDefault = {
@@ -14,6 +14,7 @@ const rubroDefault = {
 const ListaRubro = (props) => {
 
     const [listaRubros, setListaRubros] = useState([]);
+    const [listaClasificados, setListaClasificados] = useState([])
     const [actualizar, setActualizar] = useState(true);
     const [eliminarRubro, setEliminarRubro] = useState(false);
     const [rubroAEliminar, setRubroAEliminar] = useState(null);
@@ -59,7 +60,7 @@ const ListaRubro = (props) => {
         }
     )
 
-    const doElimiarRubro = (item) => {
+    const doElimiarRubro = () => {
         setModalIsShown(false);
         //setRubroAEliminar(item);
         setEliminarRubro(true);
@@ -76,10 +77,10 @@ const ListaRubro = (props) => {
         return listaRubros;
     }
 
-    const volver = () => {
-        props.navigation.state.params.onGoBack();
-        props.navigation.goBack(null)
-    }
+    // const volver = () => {
+    //     props.navigation.state.params.onGoBack();
+    //     props.navigation.goBack(null)
+    // }
 
     const doActualizar = () => {
         setActualizar(true)
@@ -99,13 +100,13 @@ const ListaRubro = (props) => {
                 </View>
 
                 <Modal /* transparent={'true'} */ visible={modalIsShown}>
-                    <View style={{ backgroundColor: 'grey', marginBottom: 10, marginTop: 200, marginHorizontal: 75, alignSelf: 'center', alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={estilosPrincipal.etiqueta, { justifyContent: 'center' }}>Esta seguro que desea eliminar el item?</Text>
+                    <View style={{ backgroundColor: primaryColor,  marginTop: 200,  alignSelf: 'center', alignItems: 'center' }}>
+                        <Text style={styles.headerBuscar}>¿Está seguro que desea eliminar el item?</Text>
                         <View style={{ flexDirection: 'row' }}>
-                            <View style={estilosPrincipal.btnGuardar, { margin: 10 }}>
-                                <Button title="Si" onPress={() => doElimiarRubro(item)} > </Button>
+                            <View style={{margin:5,width:'50%'}}>
+                                <Button title="Si" onPress={() => doElimiarRubro()} > </Button>
                             </View>
-                            <View style={estilosPrincipal.btnGuardar, { margin: 10 }}>
+                            <View style={{margin:5,width:'50%'}}>
                                 <Button title="No" onPress={() => setModalIsShown(false)}></Button>
                             </View>
                         </View>
@@ -115,20 +116,19 @@ const ListaRubro = (props) => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 , backgroundColor:primaryColor}}>
             <Text style={estilosPrincipal.titulo}> Lista de rubros</Text>
-            <View style={{ flex: 0.87, marginHorizontal: 16, }}>
+            <View style={{ flex: 0.82, marginHorizontal: 16, }}>
                 <FlatList
                     data={listaOrdenada()}
                     renderItem={({ item }) => (crearItem(item))}
                     keyExtractor={item => item.id} />
             </View>
-            <View style={{ flex: 0.15, marginHorizontal: 16, alignItems: 'center', flexDirection: 'column' }}>
-                <View style={{ flexDirection: 'row', flex: 1 }}>
-                    <View style={{ felx: 0.5, marginHorizontal: 5, }}><Button title="Nuevo rubro" style={{ position: 'absolute' }} onPress={() => props.navigation.navigate('Rubro', { rubro: rubroDefault, modoEditar: false, onGoBack: doActualizar })}></Button></View>
-                    <View style={{ felx: 0.5, marginHorizontal: 5, }}><Button title="Volver" style={{ position: 'absolute' }} onPress={() => volver()}></Button></View>
-                </View>
-                <View style={{ marginHorizontal: 5, }}><Button title="Actualizar" style={{ position: 'absolute' }} onPress={() => doActualizar()}></Button></View>
+            <View style={{ flex: 0.18,  alignItems: 'center', flexDirection: 'column' }}>
+    
+                <View style={{ width:'50%',marginVertical:5 }}><Button color={primaryDarkColor} title="Nuevo rubro"onPress={() => props.navigation.navigate('Rubro', { rubro: rubroDefault, modoEditar: false, onGoBack: doActualizar })}></Button></View>               
+                <View style={{width:'50%', marginBottom: 5 }}><Button color={primaryDarkColor}  title="Actualizar" style={{ position: 'absolute' }} onPress={() => doActualizar()}></Button></View>
+
             </View>
         </View>
     )
