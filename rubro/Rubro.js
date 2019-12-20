@@ -16,9 +16,10 @@ const Rubro = (p) => {
     const props = p.navigation.state.params;
     const navigation = p.navigation;
 
-    const [flag, setFlag] = useState(false);
+  
     const [rubro, setRubro] = useState(props.rubro);
     const [guardar, setGuardar] = useState(false);
+
 
     console.log('En Rubro');
     console.log('Modo editar: ' + props.modoEditar);
@@ -30,6 +31,7 @@ const Rubro = (p) => {
 
     useEffect(
         () => {
+           
             const doPost = () => {
                 fetch(urlJSONServer + '/rubros',
                     {
@@ -51,6 +53,7 @@ const Rubro = (p) => {
                     });
             };
             const doPut = () => {
+                setGuardar(false);
                 fetch(urlJSONServer + '/rubros/' + rubro.id,
                     {
                         method: 'PUT',
@@ -62,7 +65,7 @@ const Rubro = (p) => {
                 ).then(response => {
                     return response.json();
                 }).then(data => {
-                    setGuardar(false);
+                    doActualizarClasificados();
                     volver();
                 })
                     .catch(response => {
@@ -70,16 +73,17 @@ const Rubro = (p) => {
                         console.log(response);
                     });
             };
+           
             if (guardar) {
                 if (props.modoEditar) {
                     doPut();
                 } else {
                     doPost();
                 }
-                //volver();
+                // volver();
             };
-        }
-        , [guardar]
+        }, [guardar]
+        
     )
 
     const actualizarEstado = (nombre, valor) => {
@@ -87,9 +91,12 @@ const Rubro = (p) => {
         setRubro(rubroNuevo);
     }
 
+
     const doGuardar = () => {
-        setGuardar(true)
-    };
+            
+            setGuardar(true)
+            
+        };
 
     return (
         <View style={estilosPrincipal.contenedor}>

@@ -15,10 +15,13 @@ const ListaRubro = (props) => {
 
     const [listaRubros, setListaRubros] = useState([]);
     const [listaClasificados, setListaClasificados] = useState([])
+    const [getListaClasificados, setGetListaClasificados] = useState(false);
     const [actualizar, setActualizar] = useState(true);
     const [eliminarRubro, setEliminarRubro] = useState(false);
     const [rubroAEliminar, setRubroAEliminar] = useState(null);
-    const [modalIsShown, setModalIsShown] = useState(false)
+    const [modalIsShown, setModalIsShown] = useState(false);
+    const [clasificadoAEliminar,setClasificadoAEliminar] = useState(null);
+    const [eliminarClasificado,setEliminarClasificado] = useState(false);
 
     console.log('En lista rubro:');
 
@@ -34,7 +37,37 @@ const ListaRubro = (props) => {
                         setListaRubros(lista);
                     })
             }
+            const doGetListaClasificados = () => {
+                fetch(urlJSONServer + '/clasificados?rubro.id=' + rubroAEliminar.id.toString())
+                    .then(res => {
+                        return res.json()
+                    })
+                    .then(lista => {
+                       setGetListaClasificados(false);
+                       setListaClasificados(lista);
+                        doDeleteClasificados();
+                    })
+            }
+            const doDeleteClasificado = () => {
+                setEliminarClasificado(false);
+                fetch(urlJSONServer + '/clasificados/' + clasificadoAEliminar.id, {
+                    method: 'DELETE',
+                    headers: {
+                        'content-Type': 'application/json',
+                    },
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    
+                })
+                    .catch(response => {
+                        console.log("error en api rest, en eliminar Clasificado.");
+                        console.log(response);
+                    });
+            };
+
             const doDelete = () => {
+                setEliminarRubro(false);
                 fetch(urlJSONServer + '/rubros/' + rubroAEliminar.id, {
                     method: 'DELETE',
                     headers: {
@@ -43,7 +76,6 @@ const ListaRubro = (props) => {
                 }).then(response => {
                     return response.json();
                 }).then(data => {
-                    setEliminarRubro(false)
                     setActualizar(true)
                 })
                     .catch(response => {
@@ -54,16 +86,32 @@ const ListaRubro = (props) => {
             if (actualizar) {
                 doGet();
             }
-            if (eliminarRubro) {
+
+            if(getListaClasificados){
+                doGetListaClasificados()
+            } 
+            if(eliminarClasificado){
+                doDeleteClasificado()
+            }   
+            if(eliminarRubro){
                 doDelete();
             }
         }
     )
 
+    const doDeleteClasificados = () =>{
+        console.log('entra a doDeleteClasificados')
+        setEliminarRubro(true);
+        listaClasificados.forEach(element => {
+            
+            setClasificadoAEliminar(element);
+            setEliminarClasificado(true);
+        });
+    }
+
     const doElimiarRubro = () => {
         setModalIsShown(false);
-        //setRubroAEliminar(item);
-        setEliminarRubro(true);
+        setGetListaClasificados(true);       
     }
 
     const listaOrdenada = () => {

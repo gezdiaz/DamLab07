@@ -22,7 +22,7 @@ const clasificadoDefault = {
     precio: 0,
     correoElectronico: 'xxx@xxx',
     fecha: new Date(),
-    foto: require('./rubro/persona.png'),
+    foto:'./rubro/persona.png',
     oferta: 0,
 }
 

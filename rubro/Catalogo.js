@@ -38,6 +38,7 @@ const Catalogo = (props) => {
     const [cambiarOferta, setCambiarOferta] = useState(false);
     const [guardarDatos, setGuardarDatos] = useState(false);
     const [showACtivityIndicator, setShowActivityIndicator] = useState(false);
+    
 
     const [base64Icon, setBase64Icon] = useState('https://png.pngtree.com/element_our/png_detail/20181124/businessman-vector-icon-png_246587.jpg')
 
@@ -54,7 +55,8 @@ const Catalogo = (props) => {
 
                         setActualizarLista(false);
                         setListaRubros(lista);
-
+                       
+                       
                     })
             };
 
@@ -122,14 +124,14 @@ const Catalogo = (props) => {
                 });
                 setGuardarDatos(false);
             }
-
+            
 
         }
     )
 
     const reiniciarFiltrosBusqueda = () => {
         setBuscarClasificado({
-            rubro: rubroSeleccionado,
+            rubro: listaRubros[0],
             titulo: '',
             precioMin: 0,
             precioMax: maxPrice,
@@ -145,6 +147,15 @@ const Catalogo = (props) => {
         setBuscarClasificado(nuevo);
     }
 
+    const showFoto = (item) => {
+        if(item.foto === 1){
+            return(<Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10, backgroundColor: primaryColor }}  source={require('./persona.png')} ></Image>)
+        }
+        else {
+            return(<Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10, backgroundColor: primaryColor }} defaultSource={require('./persona.png')}  source={{uri:base64IconPrefijo.concat(item.foto.base64)}}></Image>)
+        }
+    }
+
     const crearItem = (item) => {
         setBase64Icon(base64IconPrefijo.concat(item.foto.base64));
         if (item.rubro.destacar) {
@@ -153,7 +164,7 @@ const Catalogo = (props) => {
                     <Text style={{ fontSize: 20, }}>{item.titulo}</Text>
                     <Text style={{ fontSize: 20, }}>Precio:  ${item.precio}</Text>
                     <Text style={{ fontSize: 20, }}>Cantidad Ofertas: {item.oferta}</Text>
-                    <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64Icon }}></Image>
+                    {showFoto(item)}
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ alignContent: 'center' }}>
                             <Button color={'green'} title="Ofertar" onPress={() => { item.oferta++; setCambiarOferta(true) }} /></View>
@@ -166,7 +177,7 @@ const Catalogo = (props) => {
                     <Text style={{ fontSize: 20, }}>{item.titulo}</Text>
                     <Text style={{ fontSize: 20, }}>Precio:  ${item.precio}</Text>
                     <Text style={{ fontSize: 20, }}>Cantidad Ofertas: {item.oferta}</Text>
-                    <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64Icon }}></Image>
+                    {showFoto(item)}
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ alignContent: 'center' }}>
                             <Button color={'blue'} title="Ofertar" onPress={() => { item.oferta++; setCambiarOferta(true) }} /></View>
@@ -177,6 +188,7 @@ const Catalogo = (props) => {
 
 
     const pickerItems = () => {
+       
         return (
 
             listaRubros.map((x, i) => {
@@ -187,7 +199,7 @@ const Catalogo = (props) => {
     return (
         <View style={{ flex: 1,backgroundColor:primaryTextColor}}>
 
-            <Modal visible={modalIsShown} presentationStyle={'fullScreen'}>
+            <Modal visible={modalIsShown} >
 
                 <ScrollView >
                     <View style={{backgroundColor:primaryColor, alignItems: 'center', margin: 5, flex: 1 }} >
@@ -235,7 +247,7 @@ const Catalogo = (props) => {
             </View>
             <View style={{backgroundColor:primaryColor, flex: 0.08, alignItems: 'center',paddingTop:5}}>
                 <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flex: 0.5, marginHorizontal: 5 }}><Button color={primaryDarkColor} title="Buscar" style={{ position: 'absolute' }} onPress={() => setModalIsShown(true)}></Button></View>
+                    <View style={{ flex: 0.5, marginHorizontal: 5 }}><Button color={primaryDarkColor} title="Buscar" style={{ position: 'absolute' }} onPress={() =>{setActualizarLista(true),setModalIsShown(true)}}></Button></View>
                     <View style={{ flex: 0.5, marginHorizontal: 5  }}><Button color={primaryDarkColor}  title="Listo" style={{ position: 'absolute' }} onPress={() => setGuardarDatos(true)}></Button></View>
                 </View>
             </View>

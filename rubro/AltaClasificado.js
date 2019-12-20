@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Style } from 'react'
-import {KeyboardAvoidingView , ActivityIndicator, Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid, View, Text, Button, Modal } from 'react-native';
+import { ActivityIndicator, Image, TouchableOpacity, TouchableWithoutFeedback, ScrollView, Picker, DatePickerAndroid, View, Text, Button, Modal } from 'react-native';
 import {estilosPrincipal,primaryColor} from '../commons/main-styles';
 import { TextInput, State } from 'react-native-gesture-handler';
 import { RNCamera } from 'react-native-camera'
@@ -23,7 +23,7 @@ const AltaClasificado = (p) => {
     const fechaMinima = new Date();
     const options = {
         date: fechaMinima,
-        minDate: new Date(fechaMinima.getFullYear(), fechaMinima.getMonth(), fechaMinima.getDate()+1),
+        minDate: new Date(fechaMinima.getFullYear(), fechaMinima.getMonth(), fechaMinima.getDate()),
         maxDate: new Date(fechaMinima.getFullYear() + 100, fechaMinima.getMonth(), fechaMinima.getDate()),
         mode: 'calendar',
     }
@@ -41,7 +41,30 @@ const AltaClasificado = (p) => {
 
 
 
-    const showDatePicker = async () => {
+    const showDatePickerAlta = async () => {
+
+        try {
+            //Abriri el dialogo con DatePicker
+            const { action, year, month, day } = await DatePickerAndroid.open(
+                //options
+                {
+                    date: new Date(options.date.getFullYear(),options.date.getMonth(),options.date.getDate()+1),
+                    minDate: new Date(options.date.getFullYear(),options.date.getMonth(),options.date.getDate()+1),
+                    maxDate: options.maxDate,
+                    mode: options.mode
+                }
+            );
+            if (action !== DatePickerAndroid.dismissedAction) {
+                // Selected year, month (0-11), day
+                actualizarEstadoAlta('fecha', new Date(year, month, day));
+            }
+        } catch ({ code, message }) {
+            console.warn('Cannot open date picker', message);
+        }
+    }
+
+
+    const showDatePickerEditar = async () => {
 
         try {
             //Abriri el dialogo con DatePicker
@@ -157,7 +180,15 @@ const AltaClasificado = (p) => {
         setClasificado(nuevo);
     }
 
-  
+    const showFoto = () => {
+        if(clasificado.foto === 1){
+            return(<Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10, backgroundColor: primaryColor }}  source={require('./persona.png')} ></Image>)
+        }
+        else {
+            return(<Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10, backgroundColor: primaryColor }} defaultSource={require('./persona.png')}  source={{uri:base64IconPrefijo.concat(clasificado.foto.base64)}}></Image>)
+        }
+    }
+
     if(p.navigation.state.params.modoEditar){
         return(
             <View style={{flex: 1}}>
@@ -179,7 +210,7 @@ const AltaClasificado = (p) => {
                     <TextInput defaultValue={props.clasificado.correoElectronico} style={estilosPrincipal.inputText} keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico', val)}> </TextInput>
                     <View style={{ borderWidth: 5, borderColor: 'violet', borderRadius: 10, marginHorizontal: 10, marginBottom: 10, marginTop: 10, backgroundColor: 'violet' }}>
                         <TouchableWithoutFeedback
-                            onPress={showDatePicker.bind(this)}>
+                            onPress={showDatePickerEditar.bind(this)}>
                             <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}> Seleccionar fecha fin oferta</Text>
                         </TouchableWithoutFeedback></View>
                     <Button style={estilosPrincipal.btnGuardar} title="Tomar foto" onPress={() => setTakePhoto(true)}></Button>
@@ -202,7 +233,8 @@ const AltaClasificado = (p) => {
                         </RNCamera>
                     </Modal>
         
-                    <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64IconPrefijo.concat(clasificado.foto.base64) }}></Image>
+                    {showFoto()}
+
                     <View style={{ flexDirection: 'row', alignContent: 'center' }}>
         
                         <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>
@@ -235,7 +267,7 @@ const AltaClasificado = (p) => {
                 <TextInput style={estilosPrincipal.inputText} keyboardType={"email-address"} onChangeText={val => actualizarEstadoAlta('correoElectronico', val)}> </TextInput>
                 <View style={{ borderWidth: 5, borderColor: 'violet', borderRadius: 10, marginHorizontal: 10, marginBottom: 10, marginTop: 10, backgroundColor: 'violet' }}>
                     <TouchableWithoutFeedback
-                        onPress={showDatePicker.bind(this)}>
+                        onPress={showDatePickerAlta.bind(this)}>
                         <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}> Seleccionar fecha fin oferta</Text>
                     </TouchableWithoutFeedback></View>
                 <Button style={estilosPrincipal.btnGuardar} title="Tomar foto" onPress={() => setTakePhoto(true)}></Button>
@@ -258,7 +290,7 @@ const AltaClasificado = (p) => {
                     </RNCamera>
                 </Modal>
     
-                <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10 }} defaultSource={require('./persona.png')} source={{ uri: base64Icon }}></Image>
+                {showFoto()}
                 <View style={{ flexDirection: 'row', alignContent: 'center' }}>
     
                     <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button title="Guardar" onPress={() => setGuardar(true)}></Button></View>

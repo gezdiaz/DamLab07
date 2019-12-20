@@ -42,6 +42,16 @@ const ShowClasificado = (p) => {
     const doActualizar = ()=>{
         setActualizar(true);
     }
+    
+    const showFoto = () => {
+        if(clasificadoAMostrar.foto === 1){
+            return(<Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10, backgroundColor: primaryColor }}  source={require('./persona.png')} ></Image>)
+        }
+        else {
+            return(<Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10, backgroundColor: primaryColor }} defaultSource={require('./persona.png')}  source={{uri:base64IconPrefijo.concat(clasificadoAMostrar.foto.base64)}}></Image>)
+        }
+    }
+
     return (
         <View style={{ backgroundColor: primaryColor }}>
             <Text style={estilosPrincipal.titulo}> CLASIFICADO</Text>
@@ -61,7 +71,7 @@ const ShowClasificado = (p) => {
                 <Text style={styles.headerCentrado}>Fecha fin de oferta</Text>
                 <Text style={styles.item}> {fechaAMostrar.getDate()}/{fechaAMostrar.getMonth()+1}/{fechaAMostrar.getFullYear()}</Text>
 
-                <Image style={{ alignSelf: 'center', width: 300, height: 300, marginVertical: 10, backgroundColor: primaryColor }} defaultSource={require('./persona.png')} source={{uri:base64IconPrefijo.concat(clasificadoAMostrar.foto.base64)}}></Image>
+               {showFoto()}
                 <View style={{ alignItems: 'center', flexDirection: 'row', alignContent: 'center', marginBottom: 70 }}>
 
                     <View style={{ flex: 0.65, marginHorizontal: 5 }}><Button color={primaryDarkColor} title="Editar" onPress={() => navigate('AltaClasificado', { clasificado: clasificadoAMostrar, modoEditar: true, onGoBack: doActualizar})}></Button></View>
