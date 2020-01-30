@@ -131,6 +131,7 @@ const AltaClasificado = (p) => {
                 ).then(res => {
                     setGuardar(false);
                     setShowActivityIndicator(false);
+                    volver();
                     return res.json()
                 })
                     .catch(error => console.log("error en api rest, en actualizar Clasificado."))

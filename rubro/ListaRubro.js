@@ -13,6 +13,7 @@ const rubroDefault = {
 
 const ListaRubro = (props) => {
 
+    
     const [listaRubros, setListaRubros] = useState([]);
     const [listaClasificados, setListaClasificados] = useState([])
     const [getListaClasificados, setGetListaClasificados] = useState(false);
@@ -44,13 +45,17 @@ const ListaRubro = (props) => {
                     })
                     .then(lista => {
                        setGetListaClasificados(false);
-                       setListaClasificados(lista);
-                        doDeleteClasificados();
+                       lista.forEach(element => {
+                           doDeleteClasificado(element);
+                       });
+
+                       doDelete()
+                        
                     })
             }
-            const doDeleteClasificado = () => {
-                setEliminarClasificado(false);
-                fetch(urlJSONServer + '/clasificados/' + clasificadoAEliminar.id, {
+            const doDeleteClasificado = (clasificado) => {
+
+                fetch(urlJSONServer + '/clasificados/' + clasificado.id, {
                     method: 'DELETE',
                     headers: {
                         'content-Type': 'application/json',
@@ -67,7 +72,7 @@ const ListaRubro = (props) => {
             };
 
             const doDelete = () => {
-                setEliminarRubro(false);
+                
                 fetch(urlJSONServer + '/rubros/' + rubroAEliminar.id, {
                     method: 'DELETE',
                     headers: {
@@ -90,24 +95,17 @@ const ListaRubro = (props) => {
             if(getListaClasificados){
                 doGetListaClasificados()
             } 
-            if(eliminarClasificado){
-                doDeleteClasificado()
-            }   
-            if(eliminarRubro){
-                doDelete();
-            }
         }
     )
 
-    const doDeleteClasificados = () =>{
-        console.log('entra a doDeleteClasificados')
-        setEliminarRubro(true);
-        listaClasificados.forEach(element => {
-            
-            setClasificadoAEliminar(element);
-            setEliminarClasificado(true);
-        });
-    }
+    // const doDeleteClasificados = () =>{
+    //     console.log('entra a doDeleteClasificados')
+    //     setEliminarRubro(true);
+    //     listaClasificados.forEach(element => {
+    //         setClasificadoAEliminar(element);
+    //         setEliminarClasificado(true);
+    //     });
+    // }
 
     const doElimiarRubro = () => {
         setModalIsShown(false);

@@ -57,13 +57,15 @@ const ShowClasificado = (p) => {
             <Text style={estilosPrincipal.titulo}> CLASIFICADO</Text>
             <ScrollView >
                 <Text style={styles.headerCentrado} >Rubro</Text>
-                <Text style={styles.item}> {clasificadoAMostrar.descripcion}</Text>
+                <Text style={styles.item}> {clasificadoAMostrar.rubro.descripcion}</Text>
                 <Text style={styles.headerCentrado}>Titulo</Text>
                 <Text style={styles.item}> {clasificadoAMostrar.titulo}</Text>
                 <Text style={styles.headerCentrado}>Descripción</Text>
                 <Text style={styles.item} multiline={true} numberOfLines={5} > {clasificadoAMostrar.descripcion} </Text>
                 <Text style={styles.headerCentrado}>Precio</Text>
                 <Text style={styles.item} > {clasificadoAMostrar.precio} </Text>
+                <Text style={styles.headerCentrado}>Cantidad de ofertas</Text>
+                <Text style={styles.item} > {clasificadoAMostrar.oferta} </Text>
                 <Text style={styles.headerCentrado}>Correo electrónico</Text>
 
                 <Text style={styles.item}> {clasificadoAMostrar.correoElectronico} </Text>
